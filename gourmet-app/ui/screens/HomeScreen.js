@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { View, Text } from "react-native";
+import React from 'react'
+import { View, Text } from 'react-native'
 
-export  function HomeScreen (){
-    return(
-        <View>
-            <Text>Home screen</Text>
+export default function HomeScreen() {
+    return (
+        <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+            <Text>HomeScreen</Text>
         </View>
     )
 }
