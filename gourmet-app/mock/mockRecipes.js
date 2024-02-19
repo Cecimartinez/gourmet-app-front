@@ -10,7 +10,7 @@ const categories = [
 
 export const mockRecipes = [
   {
-    img: "./assets/images/recipes/tarta-manzana.png", 
+    img: "../assets/images/recipes/tarta-manzana.png", 
     categoria: categories[3].name, // Dinner
     nombre: "Tarta de Manzana",
     descripcion: "Deliciosa tarta de manzana casera.",
@@ -20,7 +20,7 @@ export const mockRecipes = [
     ingredientes: ["manzanas", "harina", "azúcar", "mantequilla"]
   },
   {
-    img: "./assets/images/recipes/pollo-curry.png",
+    img: "../assets/images/recipes/pollo-curry.png",
     categoria: categories[3].name, // Dinner
     nombre: "Pollo al Curry",
     descripcion: "Pollo cocinado con una deliciosa salsa de curry.",
@@ -30,7 +30,7 @@ export const mockRecipes = [
     ingredientes: ["pollo", "curry", "cebolla", "ajo", "crema"]
   },
   {
-    img: "./assets/images/recipes/batido.png",
+    img: "../assets/images/recipes/batido.png",
     categoria: categories[4].name, // Dessert
     nombre: "Batido de Frutas",
     descripcion: "Batido refrescante de frutas variadas.",
@@ -40,7 +40,7 @@ export const mockRecipes = [
     ingredientes: ["fresas", "plátano", "kiwi", "jugo de naranja"]
   },
   {
-    img: "./assets/images/recipes/ensalada-griega.png",
+    img: "../assets/images/recipes/ensalada-griega.png",
     categoria: categories[5].name, // Mediterranean
     nombre: "Ensalada Griega",
     descripcion: "Ensalada fresca con tomate, pepino, cebolla, queso feta y aceitunas.",
@@ -50,7 +50,7 @@ export const mockRecipes = [
     ingredientes: ["tomate", "pepino", "cebolla", "queso feta", "aceitunas"]
   },
   {
-    img: "./assets/images/recipes/vegan-burger.png",
+    img: "../assets/images/recipes/vegan-burger.png",
     categoria: categories[6].name, // Vegan
     nombre: "Hamburguesa Vegana",
     descripcion: "Hamburguesa hecha con garbanzos, zanahoria y especias.",
@@ -60,7 +60,7 @@ export const mockRecipes = [
     ingredientes: ["garbanzos", "zanahoria", "cebolla", "pan integral"]
   },
   {
-    img: "./assets/images/recipes/pastel-chocolate.png",
+    img: "../assets/images/recipes/pastel-chocolate.png",
     categoria: categories[4].name, // Dessert
     nombre: "Pastel de Chocolate",
     descripcion: "Pastel de chocolate esponjoso y decadente.",

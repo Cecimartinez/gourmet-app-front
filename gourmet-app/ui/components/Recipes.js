@@ -6,7 +6,6 @@ import { mockRecipes } from '../../mock/mockRecipes';
 export default function Recipes() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Recipes</Text>
 
             <View style={styles.masonryList}>
                 <MasonryList
@@ -28,7 +27,8 @@ const RecipeCard = ({ item, index }) => {
     return (
         <View style={styles.recipeCard}>
             <Pressable style={[styles.pressable, { paddingLeft: isEven ?  0 :  8, paddingRight: isEven ?  8 :  0 }]}>
-                <Image source={{ uri: item.img }} style={styles.image} />
+            {/* TODO: refactorizar imagen item.img */}
+            <Image source={require("../../assets/images/recipes/tarta-manzana.png")} style={styles.image} />
                 <Text style={styles.recipeName}>{item.nombre}</Text>
             </Pressable>
         </View>
@@ -37,13 +37,10 @@ const RecipeCard = ({ item, index }) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal:  16,
+        marginHorizontal:  3,
         marginTop:  8,
     },
-    title: {
-        fontSize:  22,
-        fontWeight: '400',
-    },
+
     masonryList: {
         flex:  1,
     },
@@ -56,13 +53,14 @@ const styles = StyleSheet.create({
         marginBottom:  16,
     },
     image: {
-        width:  100,
-        height:  100,
-        borderRadius:  35,
+        width:  160,
+        height:  160,
+        borderRadius:  25,
         backgroundColor: 'rgba(0,  0,  0,  0.2)',
     },
     recipeName: {
-        fontSize:  15,
+        fontSize:  13,
         marginTop:  10,
+        fontWeight: 'bold',
     },
 });
