@@ -1,9 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import Search from '../components/Search'
+import Categories from '../components/Categories'
 
 export default function HomeScreen() {
+    
+    const [activeCategory, setActiveCategory] =useState('Veggie')
+
     return (
         <View style={{flex: 1}}>
             <StatusBar style='dark'/>
@@ -21,6 +25,7 @@ export default function HomeScreen() {
                 </View>
 
                 <Search/>
+                <Categories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
             </ScrollView>
         </View>
     )
