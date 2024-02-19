@@ -9,8 +9,8 @@ const categories = [
 ];
 
 export const mockRecipes = [
-  {
-    img: "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg", 
+  { id:"1",
+    img: "https://imag.bonviveur.com/tarta-de-manzana.webp", 
     categoria: categories[3].name, // Dinner
     nombre: "Tarta de Manzana",
     descripcion: "Deliciosa tarta de manzana casera.",
@@ -21,8 +21,8 @@ export const mockRecipes = [
     tiempo:["20 min"],
     estrellas:["3"],
   },
-  {
-    img: "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
+  {id:"2",
+    img: "https://i.blogs.es/9ea7a4/pollo_curry-copia/1366_2000.jpg",
     categoria: categories[3].name, // Dinner
     nombre: "Pollo al Curry",
     descripcion: "Pollo cocinado con una deliciosa salsa de curry.",
@@ -33,8 +33,8 @@ export const mockRecipes = [
     tiempo:["30 min"],
     estrellas:["4.5"],
   },
-  {
-    img: "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
+  {id:"3",
+    img: "https://www.cocinatis.com/archivos/202303/07-receta-batidos-faciles-con-frutas-y-verduras-de-temporada-749x388x80xX.jpg",
     categoria: categories[4].name, // Dessert
     nombre: "Batido de Frutas",
     descripcion: "Batido refrescante de frutas variadas.",
@@ -45,8 +45,8 @@ export const mockRecipes = [
     tiempo:["15 min"],
     estrellas:["4.5"],
   },
-  {
-    img: "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
+  {id:"4",
+    img: "https://i.blogs.es/b95a9e/ensalada-griega-1a/1366_2000.jpg",
     categoria: categories[5].name, // Mediterranean
     nombre: "Ensalada Griega",
     descripcion: "Ensalada fresca con tomate, pepino, cebolla, queso feta y aceitunas.",
@@ -57,8 +57,8 @@ export const mockRecipes = [
     tiempo:["330 min"],
     estrellas:["4.5"],
   },
-  {
-    img: "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
+  { id:"5",
+    img: "https://i0.wp.com/veganista.es/wp-content/uploads/2018/04/IMG_20180424_141630.jpg?w=624&ssl=1",
     categoria: categories[6].name, // Vegan
     nombre: "Hamburguesa Vegana",
     descripcion: "Hamburguesa hecha con garbanzos, zanahoria y especias.",
@@ -69,8 +69,8 @@ export const mockRecipes = [
     tiempo:["30 min"],
     estrellas:["4"],
   },
-  {
-    img: "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
+  { id:"6",
+    img: "https://images.hola.com/imagenes/cocina/recetas/20220503209111/tarta-chocolate-levaduramadre/1-83-115/tarta-levadura-t.jpg?tx=w_1200",
     categoria: categories[4].name, // Dessert
     nombre: "Pastel de Chocolate",
     descripcion: "Pastel de chocolate esponjoso y decadente.",
@@ -79,7 +79,7 @@ export const mockRecipes = [
     videoYoutube: "https://www.youtube.com/watch?v=video6",
     ingredientes: ["harina", "azúcar", "chocolate", "huevos", "mantequilla"],
     tiempo:["30 min"],
-    estrellas:["4.5"],
+    estrellas:["4"],
   },
   
 ];
