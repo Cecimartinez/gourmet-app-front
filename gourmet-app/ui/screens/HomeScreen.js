@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import Search from '../components/Search'
 import Categories from '../components/Categories'
+import Recipes from '../components/Recipes'
 
 export default function HomeScreen() {
     
@@ -26,6 +27,11 @@ export default function HomeScreen() {
 
                 <Search/>
                 <Categories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+            
+                <View>
+                    <Recipes/>
+                </View>    
+            
             </ScrollView>
         </View>
     )
