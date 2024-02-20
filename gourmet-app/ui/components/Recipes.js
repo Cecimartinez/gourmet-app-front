@@ -86,7 +86,7 @@ export default function Recipes() {
                      renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
                      onEndReachedThreshold={0.1}
                  />
-                 <Button onPress={handleButtonPress}>Refresh</Button>
+                 <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
              </View>
          </View>
         // <View style={styles.container}>
