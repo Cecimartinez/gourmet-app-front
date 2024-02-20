@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Button, Image } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import  {GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin'
 import { useEffect, useState } from 'react'
@@ -37,6 +37,15 @@ export default function SignInScreen() {
 
     return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+            <Text style={{ fontSize: 55, fontWeight: "bold", color: "#F39E0B" }}>
+              Gourmet
+            </Text>
+
+            <Image
+              source={require('../../assets/images/icon-gourmet.png')}
+              style={{ width: 200, height: 200, marginTop: 100, marginBottom: 100 }}
+            />
+
             <Text>{JSON.stringify(error)}</Text>
             {userInfo && <Text>{JSON.stringify(userInfo.user)}</Text>}
             {userInfo ? (
