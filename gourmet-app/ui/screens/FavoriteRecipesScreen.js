@@ -17,7 +17,7 @@ export default function FavoriteRecipesScreen() {
   const navigation = useNavigation(); // Obtiene la función de navegación
   useEffect(() => {
     // Realiza una solicitud HTTP para obtener las recetas desde tu backend
-    fetch('https://ad-backend-production.up.railway.app/api/recipes/')
+    fetch('https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278')
       .then((response) => response.json())
       .then((data) => {
         // Actualiza el estado con las recetas obtenidas
@@ -176,6 +176,8 @@ recipeImage:{
     marginTop:10,
     alignSelf:'flex-start',
     marginBottom:30,
+    marginRight:10,
+
   },
   recipeInformation:{
     backgroundColor:'rgb(249,247,248)',
