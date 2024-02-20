@@ -16,6 +16,7 @@ export default function HomeScreen() {
                 style={{marginTop: 50}}
                 contentContainerStyle={{paddingHorizontal: '5%', paddingBottom: 50}}
                 showsVerticalScrollIndicator={false}
+                
             >
                 <View style={{marginBottom: 20}}>
                     <Text style={{fontSize: 18, color: '#555', textAlign: 'left'}}>Hello, Ana!</Text>
