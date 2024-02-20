@@ -9,64 +9,77 @@ const categories = [
 ];
 
 export const mockRecipes = [
-  {
-    img: "../assets/images/recipes/tarta-manzana.png", 
+  { id:"1",
+    img: "https://imag.bonviveur.com/tarta-de-manzana.webp", 
     categoria: categories[3].name, // Dinner
     nombre: "Tarta de Manzana",
     descripcion: "Deliciosa tarta de manzana casera.",
     pasos: ["Pelar y cortar las manzanas.", "Preparar la masa.", "Hornear la tarta."],
     infoNutricional: { calorias: 300, proteinas: 5, carbohidratos: 50, grasas: 10 },
     videoYoutube: "https://www.youtube.com/watch?v=video1",
-    ingredientes: ["manzanas", "harina", "azúcar", "mantequilla"]
+    ingredientes: ["manzanas", "harina", "azúcar", "mantequilla"],
+    tiempo:["20 min"],
+    estrellas:["3"],
   },
-  {
-    img: "../assets/images/recipes/pollo-curry.png",
+  {id:"2",
+    img: "https://i.blogs.es/9ea7a4/pollo_curry-copia/1366_2000.jpg",
     categoria: categories[3].name, // Dinner
     nombre: "Pollo al Curry",
     descripcion: "Pollo cocinado con una deliciosa salsa de curry.",
     pasos: ["Cocinar el pollo.", "Preparar la salsa de curry.", "Mezclar todo y servir."],
     infoNutricional: { calorias: 400, proteinas: 30, carbohidratos: 20, grasas: 15 },
     videoYoutube: "https://www.youtube.com/watch?v=video2",
-    ingredientes: ["pollo", "curry", "cebolla", "ajo", "crema"]
+    ingredientes: ["pollo", "curry", "cebolla", "ajo", "crema"],
+    tiempo:["30 min"],
+    estrellas:["4.5"],
   },
-  {
-    img: "../assets/images/recipes/batido.png",
+  {id:"3",
+    img: "https://www.cocinatis.com/archivos/202303/07-receta-batidos-faciles-con-frutas-y-verduras-de-temporada-749x388x80xX.jpg",
     categoria: categories[4].name, // Dessert
     nombre: "Batido de Frutas",
     descripcion: "Batido refrescante de frutas variadas.",
     pasos: ["Cortar las frutas.", "Licuar con hielo.", "Servir y disfrutar."],
     infoNutricional: { calorias: 200, proteinas: 3, carbohidratos: 40, grasas: 2 },
     videoYoutube: "https://www.youtube.com/watch?v=video3",
-    ingredientes: ["fresas", "plátano", "kiwi", "jugo de naranja"]
+    ingredientes: ["fresas", "plátano", "kiwi", "jugo de naranja"],
+    tiempo:["15 min"],
+    estrellas:["4.5"],
   },
-  {
-    img: "../assets/images/recipes/ensalada-griega.png",
+  {id:"4",
+    img: "https://i.blogs.es/b95a9e/ensalada-griega-1a/1366_2000.jpg",
     categoria: categories[5].name, // Mediterranean
     nombre: "Ensalada Griega",
     descripcion: "Ensalada fresca con tomate, pepino, cebolla, queso feta y aceitunas.",
     pasos: ["Cortar los vegetales.", "Agregar el queso feta y las aceitunas.", "Aliñar con aceite de oliva y orégano."],
     infoNutricional: { calorias: 250, proteinas: 10, carbohidratos: 15, grasas: 18 },
     videoYoutube: "https://www.youtube.com/watch?v=video4",
-    ingredientes: ["tomate", "pepino", "cebolla", "queso feta", "aceitunas"]
+    ingredientes: ["tomate", "pepino", "cebolla", "queso feta", "aceitunas"],
+    tiempo:["330 min"],
+    estrellas:["4.5"],
   },
-  {
-    img: "../assets/images/recipes/vegan-burger.png",
+  { id:"5",
+    img: "https://i0.wp.com/veganista.es/wp-content/uploads/2018/04/IMG_20180424_141630.jpg?w=624&ssl=1",
     categoria: categories[6].name, // Vegan
     nombre: "Hamburguesa Vegana",
     descripcion: "Hamburguesa hecha con garbanzos, zanahoria y especias.",
     pasos: ["Triturar los garbanzos y mezclar con zanahoria rallada y especias.", "Formar las hamburguesas y cocinar a la plancha.", "Servir en pan integral con vegetales frescos."],
     infoNutricional: { calorias: 320, proteinas: 12, carbohidratos: 45, grasas: 8 },
     videoYoutube: "https://www.youtube.com/watch?v=video5",
-    ingredientes: ["garbanzos", "zanahoria", "cebolla", "pan integral"]
+    ingredientes: ["garbanzos", "zanahoria", "cebolla", "pan integral"],
+    tiempo:["30 min"],
+    estrellas:["4"],
   },
-  {
-    img: "../assets/images/recipes/pastel-chocolate.png",
+  { id:"6",
+    img: "https://images.hola.com/imagenes/cocina/recetas/20220503209111/tarta-chocolate-levaduramadre/1-83-115/tarta-levadura-t.jpg?tx=w_1200",
     categoria: categories[4].name, // Dessert
     nombre: "Pastel de Chocolate",
     descripcion: "Pastel de chocolate esponjoso y decadente.",
     pasos: ["Preparar la masa de chocolate.", "Hornear el pastel.", "Decorar con crema batida y fresas."],
     infoNutricional: { calorias: 400, proteinas: 6, carbohidratos: 50, grasas: 20 },
     videoYoutube: "https://www.youtube.com/watch?v=video6",
-    ingredientes: ["harina", "azúcar", "chocolate", "huevos", "mantequilla"]
-  }
+    ingredientes: ["harina", "azúcar", "chocolate", "huevos", "mantequilla"],
+    tiempo:["30 min"],
+    estrellas:["4"],
+  },
+  
 ];
