@@ -133,7 +133,7 @@ const CreateRecipeScreen = () => {
                  description: description,
                  ingredients: ingredients.map(ingredient => ({ name: ingredient.name, quantity: +ingredient.cantidad })),
                  instructions: pasos.map(step => step.description),
-                 user: "64a60d14592f32e512ada278", // Este ID de usuario podría obtenerse de la sesión actual o de alguna otra fuente
+                 user: "64a60d14592f32e512ada278", //  MUY IMPORTANTE 
                 photo: arrayPhotos.filter(photo => photo !== null),
                  requiredTime: 20, // Este valor puede ser ajustado según tus necesidades
                  portion: 2, // Este valor puede ser ajustado según tus necesidades
