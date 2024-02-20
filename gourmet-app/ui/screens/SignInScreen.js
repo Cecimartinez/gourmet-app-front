@@ -12,7 +12,7 @@ export default function SignInScreen() {
     useEffect(() => {
         GoogleSignin.configure({
           webClientId:
-            "89153556013-v985oo4me6scftsvd8skju6kkmi6o4dp.apps.googleusercontent.com",
+          "1021968533763-p9hneaa9fu94lgm8rre172vga0mibp7b.apps.googleusercontent.com",
         });
       }, []);
 
