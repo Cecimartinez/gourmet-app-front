@@ -1,11 +1,14 @@
-import React, {useState } from "react";
+import React, { useState, useRef  } from "react";
 import { Button,  Icon,  Input } from "@rneui/themed";
 import {  View, StyleSheet, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import TouchableCategory from "../components/TouchableCategory/TouchableCategory";
 import IngredientesComponent from "../components/IngredientesComponent/IngredientesComponent";
-import { ImagePicker } from 'expo';
 import StepsComponent from "../components/StepsComponent/StepsComponent";
 import { StatusBar } from 'expo-status-bar'
+import * as ImagePicker from 'expo-image-picker';
+import ActionSheet from 'react-native-actionsheet';
+
+
 
 const CreateRecipeScreen = () => {
     const [calories, setCalories] = useState('');
@@ -17,7 +20,7 @@ const CreateRecipeScreen = () => {
     const [description, setDescription] = useState('');
     const [videoURL, setVideoURL] = useState('');
     const [categories, setCategories] = useState([]);
-    const [images, setImages] = useState([]);
+    const [imagesArray, setImagesArray] = useState([]);
     const [ingredients, setIngredients] = useState([]);
     const [nutritionalInfo, setNutritionalInfo] = useState([ ]);
     const [pasos, setPasos] = useState([]);
@@ -31,6 +34,29 @@ const CreateRecipeScreen = () => {
     ]
     const categoriesArray = [ {id: 1, name: 'Vegetariana'}, {id: 2, name: 'Gluten Free'}, {id: 3, name: 'Cena'}, {id: 4, name: 'Postre'},{id: 5, name: 'Mediteranea'}, {id: 6, name: 'Vegana'}, {id: 7, name: 'Sin TACC'}, {id: 8, name: 'Celiaca'}]
     const [visible, setIsVisible] = useState(false);
+
+
+
+    // componente seleccionar sacar foto o galeria 
+    const [imageUri, setImageUri] = useState(null);
+    
+    const actionSheetRef = useRef(null);
+
+     // manejo de action sheet
+    const openActionSheet = () => {
+        actionSheetRef.current.show();
+    };
+
+    // Funcion manejo selección del ActionSheet
+    const handleActionSheet = (index) => {
+        if (index === 0) {
+        // Tomar foto
+        takeImage();
+        } else if (index === 1) {
+        // Elegir de la galería
+        pickImage();
+        }
+    };
     
     const handleIngredientModalClose = ({ ingredient, amount, updatedIngredient }) => {
         if (updatedIngredient) {
@@ -134,7 +160,7 @@ const CreateRecipeScreen = () => {
                  ingredients: ingredients.map(ingredient => ({ name: ingredient.name, quantity: +ingredient.cantidad })),
                  instructions: pasos.map(step => step.description),
                  user: "64a60d14592f32e512ada278", //  MUY IMPORTANTE 
-                photo: arrayPhotos.filter(photo => photo !== null),
+                photo: imagesArray.filter(photo => photo !== null),
                  requiredTime: 20, // Este valor puede ser ajustado según tus necesidades
                  portion: 2, // Este valor puede ser ajustado según tus necesidades
                  hashtag: "Ensalada", // Este valor puede ser ajustado según tus necesidades
@@ -209,6 +235,106 @@ const CreateRecipeScreen = () => {
     };
 
 
+    /**
+     * 
+     * 
+     *    MANEJO DE IMAGENES
+     * 
+     * 
+     */
+
+    
+  
+    const [status, requestPermission] = ImagePicker.useCameraPermissions();
+    const [cameraPermission, setCameraPermission] = useState(false);
+
+     const getCameraPermission = async () => {
+          console.log("pide permiso")
+        //   const { status } = await Permissions.requestAsync(Permissions.CAMERA);
+        requestPermission();
+          if (status !== 'granted') {
+              alert('Se requieren permisos de cámara para tomar fotos.');
+         }
+         console.log("status:",status)
+         setCameraPermission(status === 'granted');
+         console.log("cameraPermission:",cameraPermission)
+     };
+
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [image, setImage] = useState("");
+
+    const takeImage = async () => {
+        console.log("entra a take image")
+        getCameraPermission();
+        console.log(status)
+        let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 1,
+          allowsMultipleSelection: false
+        });
+    
+        console.log("saca FOTO")
+        console.log(result);
+        
+        setImagesArray([...imagesArray, result.assets[0].uri]);
+        console.log("imagesArray en take image",imagesArray)
+
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+      };
+
+
+    
+    const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        allowsMultipleSelection: false,
+        orderedSelection: true,
+        selectionLimit: 10,
+  
+      });
+      console.log("saca FOTO")
+      console.log(result);
+      setImagesArray([...imagesArray, result.assets[0].uri]);
+
+  
+      if (!result.canceled) {
+        setImage(result.assets[0]);
+      }
+    };
+  
+    
+    
+   
+    
+  
+    const toggleCamera = () => {
+      setIsCameraOpen(!isCameraOpen);
+    };
+  
+    if(isCameraOpen) return <CameraComponent hideToggleSetter={setIsCameraOpen} allowImageSet={false} _cb={setImage}/>
+  
+
+
+    const pickImageExample = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+        setImage(result.assets[0].uri);
+        }
+    };
+
     return(
         <View style={styles.container}>
         <StatusBar style='dark'/>
@@ -217,7 +343,7 @@ const CreateRecipeScreen = () => {
                     showsVerticalScrollIndicator={false}
         >
             <Text style={{color:"#FFA200", fontSize:18, fontWeight:"500", paddingLeft:10}} >Create Recipe</Text>
-            <View style={styles.containerScrollView}>
+            {/* <View style={styles.containerScrollView}>
                 <ScrollView style={{ flex: 1 }}
                             horizontal
                             contentContainerStyle={styles.imageContainer}
@@ -233,6 +359,42 @@ const CreateRecipeScreen = () => {
                     />
                     <Image source={{ uri: "null" }} style={styles.image} />
                 </ScrollView>
+            </View> */}
+            <View style={styles.container}>
+            <View style={styles.containerScrollView}>
+                <ScrollView
+                style={{ flex: 1 }}
+                horizontal
+                contentContainerStyle={styles.imageContainer}
+                showsHorizontalScrollIndicator={false}
+                >
+                {/* {arrayPhotos.map((photo, index) => (
+                    <Image key={index} source={{ uri: photo }} style={styles.image} />
+                ))} */}
+                {imagesArray.map((photo, index) => (
+                        console.log("pgoto",photo),
+                        console.log("imagenesArray",imagesArray),
+                    <Image key={index} source={{ uri: photo }} style={styles.image}  />
+                ))}
+                <Button
+                    icon={<Icon name="add-circle-outline" size={30} />}
+                    color={'white'}
+                    style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}
+                    onPress={openActionSheet} // Llama a la función openActionSheet al presionar el botón
+                />
+                <Image source={{ uri: "null" }} style={styles.image} />
+                </ScrollView>
+            </View>
+
+            {/* ActionSheet */}
+            <ActionSheet
+                ref={actionSheetRef}
+                title={'Elige una opción'}
+                options={['Tomar foto', 'Elegir de la galería', 'Cancelar']}
+                cancelButtonIndex={2}
+                destructiveButtonIndex={2}
+                onPress={handleActionSheet}
+            />
             </View>
             <View style={styles.infoContainer}>
                 <View style={styles.formItem}>
@@ -324,6 +486,27 @@ const CreateRecipeScreen = () => {
             <StepsComponent stepsArray={pasos}   handleModalClose={handleStepModalClose}     />
 
             <Button onPress={handleCreateRecipe}>Create Recipe</Button>
+
+            <View style={styles.container}>
+                <Text style={styles.title}>Cargar foto</Text>
+                <View style={styles.row}>
+                    <TouchableOpacity style={styles.col2} onPress={takeImage}>
+                    <View style={styles.buttonView}>
+                        <Text style={styles.buttonText}>Tomar Foto</Text>
+                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.col2} onPress={pickImage}>
+                    <View style={styles.buttonView}>
+                        <Text style={styles.buttonText}>Elegir Fotos</Text>
+                    </View>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Use a light status bar on iOS to account for the black space above the modal
+                <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} /> */}
+            </View>
+
+
 
 
             </ScrollView>   
@@ -424,7 +607,16 @@ const styles = StyleSheet.create({
     inputContainer:{
         width: '18%',
     },
-
+    buttomView:{
+            width: "90%",
+            height: 350,
+            borderRadius: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginVertical: 10
+        
+    },
 }
 )
 export default CreateRecipeScreen
