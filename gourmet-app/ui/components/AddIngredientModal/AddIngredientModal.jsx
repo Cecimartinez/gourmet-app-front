@@ -46,7 +46,7 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
                             <Input value={ingredient} placeholder="Ingrediente" onChangeText={setIngredient} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Input value={amount} placeholder="Cantidad" onChangeText={setAmount} />
+                            <Input value={amount} placeholder="Cantidad" onChangeText={setAmount} keyboardType="numeric"  />
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>

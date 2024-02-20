@@ -35,11 +35,15 @@ export default function Categories({ activeCategory, setActiveCategory }) {
 const styles = StyleSheet.create({
     container: {
         flex:  1,
+        marginBottom:  10,
+    },
+    scrollViewContent: {
         marginBottom:  20,
     },
 
     categoryContainer: {  
         marginTop:30,
+        paddingBottom:  8,
         marginHorizontal:  3,
         paddingVertical:  8,
         paddingHorizontal:  12,

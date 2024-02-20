@@ -48,7 +48,7 @@ const AddStepModal = ({ visible, onClose, selectedStep }) => {
                     </View>
                     <View style={styles.formItem}>
                         <View style={styles.inputContainer}>
-                            <Input value={step} placeholder="Paso" onChangeText={setStep} />
+                            <Input value={step} placeholder="Paso" onChangeText={setStep} keyboardType="numeric"/>
                         </View>
                         <View style={styles.inputContainer}>
                             <Input value={detail} placeholder="Detalle" onChangeText={setDetail} />

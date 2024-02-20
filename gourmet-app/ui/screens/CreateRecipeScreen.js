@@ -119,33 +119,121 @@ const CreateRecipeScreen = () => {
         }
     };
 
+    /**
+     * 
+     *              POST
+     * 
+     * 
+     */
+    const handleCreateRecipe = async () => {
+        try {
+            // Construir el objeto de datos de la receta
+            const recipeData = {
+                 title: name,
+                 description: description,
+                 ingredients: ingredients.map(ingredient => ({ name: ingredient.name, quantity: +ingredient.cantidad })),
+                 instructions: pasos.map(step => step.description),
+                 user: "64a60d14592f32e512ada278", //  MUY IMPORTANTE 
+                photo: arrayPhotos.filter(photo => photo !== null),
+                 requiredTime: 20, // Este valor puede ser ajustado según tus necesidades
+                 portion: 2, // Este valor puede ser ajustado según tus necesidades
+                 hashtag: "Ensalada", // Este valor puede ser ajustado según tus necesidades
+                  calorie: +calories,
+                  fat: +grasas,
+                  protein: +proteinas,
+              
+
+                rating: 4.9, // Este valor puede ser ajustado según tus necesidades
+                sodium: +sodio, // Asumo que este valor está disponible en tu interfaz de usuario para que el usuario lo ingrese
+                like: 0, // Puedes inicializarlo en 0 o ajustarlo según tus necesidades
+                video: videoURL // Asumo que este valor está disponible en tu interfaz de usuario para que el usuario lo ingrese
+             };
+             const stringified = JSON.stringify(recipeData)
+            const json = JSON.parse(stringified)
+            console.log("json:",json)
+            // const recipeData = {
+            //     title: "Ensalada César dos",
+            //     description: "Una deliciosa ensalada clásica con aderezo César.",
+            //     ingredients: [
+            //         { name: "Lechuga romana", quantity: 200 },
+            //         { name: "Pollo a la parrilla", quantity: 150 },
+            //         { name: "Pan tostado", quantity: 50 },
+            //         { name: "Queso parmesano", quantity: 50 },
+            //         { name: "Aderezo César", quantity: 50 }
+            //     ],
+            //     instructions: [
+            //         "Lavar y cortar la lechuga romana.",
+            //         "Cocinar el pollo a la parrilla y cortarlo en tiras.",
+            //         "Tostar el pan y cortarlo en cubos.",
+            //         "Mezclar la lechuga, el pollo, el pan tostado y el queso parmesano en un tazón grande.",
+            //         "Agregar el aderezo César y mezclar bien.",
+            //         "Servir frío y disfrutar."
+            //     ],
+            //     user: "64a60d14592f32e512ada278",
+            //     photo: [
+            //         "https://res.cloudinary.com/dy7r9rbsj/image/upload/v1708390382/Gourmet-app/xjtwnhovsqwfz2mdzcqd.jpg",
+            //         "https://res.cloudinary.com/dy7r9rbsj/image/upload/v1708390434/Gourmet-app/s5osphvphvtora4fggx1.jpg"
+            //     ],
+            //     requiredTime: 20,
+            //     portion: 2,
+            //     hashtag: "Ensalada",
+            //     calorie: 350,
+            //     fat: 15,
+            //     protein: 30,
+            //     rating: 4.9,
+            //     sodium: 25,
+            //     like: 235,
+            //     video: "youtube.com/ensalada_cesar"
+            // };
+
+            // Realizar la solicitud POST al servidor
+            const response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(recipeData)
+            });
+                console.log("body:",JSON.stringify(recipeData))
+            // Verificar si la solicitud fue exitosa
+            if (response.ok) {
+                // Si la respuesta es exitosa, puedes manejar el resultado aquí
+                console.log('Receta creada exitosamente');
+            } else {
+                // Si la respuesta no fue exitosa, maneja el error
+                console.error('Error al crear la receta:', response.status);
+            }
+        } catch (error) {
+            console.error('Error al crear la receta:', error);
+        }
+    };
+
+
     return(
         <View style={styles.container}>
         <StatusBar style='dark'/>
-            <ScrollView style={{marginTop: 50}}
-                        contentContainerStyle={{ paddingBottom: 100}}
-                        showsVerticalScrollIndicator={false}
-            
-            >
+        <ScrollView style={{marginTop: 50}}
+                    contentContainerStyle={{ paddingBottom: 100}}
+                    showsVerticalScrollIndicator={false}
+        >
             <Text style={{color:"#FFA200", fontSize:18, fontWeight:"500", paddingLeft:10}} >Create Recipe</Text>
-                <View style={styles.containerScrollView}>
-                    <ScrollView style={{ flex: 1 }}
-                        horizontal
-                        contentContainerStyle={styles.imageContainer}
-                        showsHorizontalScrollIndicator={false}>
-                        {arrayPhotos.map((photo, index) => (
+            <View style={styles.containerScrollView}>
+                <ScrollView style={{ flex: 1 }}
+                            horizontal
+                            contentContainerStyle={styles.imageContainer}
+                            showsHorizontalScrollIndicator={false}>
+                    {arrayPhotos.map((photo, index) => (
                         <Image key={index} source={{ uri: photo }} style={styles.image} />
-                        ))}
-                        <Button 
-                            icon={<Icon name= "add-circle-outline" size={30} />}
-                            color={'white'}
-                            style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}  
-                            onPress={takePhotoHandler}
-                        />
-                        <Image source={{ uri: "null" }} style={styles.image} />
-
-                    </ScrollView>
-                </View>
+                    ))}
+                    <Button 
+                        icon={<Icon name= "add-circle-outline" size={30} />}
+                        color={'white'}
+                        style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}  
+                        onPress={takePhotoHandler}
+                    />
+                    <Image source={{ uri: "null" }} style={styles.image} />
+                </ScrollView>
+            </View>
             <View style={styles.infoContainer}>
                 <View style={styles.formItem}>
                     <Input style={{fontSize:15}} value={name} placeholder="Name" onChangeText={(text) => setName(text)} />
@@ -169,75 +257,73 @@ const CreateRecipeScreen = () => {
                         <TouchableCategory key={index} category={category} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />                  
                     ))}
                 </ScrollView>
-
                 </View>
             </View>
             <View style={styles.nutritionalInfo}>
                 <Text style={styles.title}>Informacion nutricional</Text>
-                    <View style={styles.nutritionalInfoContainer}>
-                        <View style={styles.formItem}>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>Calorias</Text>
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <Input value={calories} onChangeText={(text) => setCalories(text)} />
-                            </View>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>Kcal</Text>
-                            </View>
+                <View style={styles.nutritionalInfoContainer}>
+                    <View style={styles.formItem}>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>Calorias</Text>
                         </View>
-                        <View style={styles.formItem}>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>Carbohidratos</Text>
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <Input  value={name} onChangeText={(text) => setCarbohidratos(text)} />
-                            </View>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>g</Text>
-                            </View>
+                        <View style={styles.inputContainer}>
+                            <Input value={calories} onChangeText={(text) => setCalories(text)} keyboardType="numeric" />
                         </View>
-                        <View style={styles.formItem}>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>Grasas</Text>
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <Input  value={name} onChangeText={(text) => setGrasas(text)} />
-                            </View>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>g</Text>
-                            </View>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>Kcal</Text>
                         </View>
-                        <View style={styles.formItem}>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>Proteinas</Text>
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <Input  value={name} onChangeText={(text) => setProteinas(text)} />
-                            </View>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>g</Text>
-                            </View>
-                        </View>
-                        <View style={styles.formItem}>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>Sodio</Text>
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <Input  value={name} onChangeText={(text) => setSodio(text)} />
-                            </View>
-                            <View style={styles.legendContainer}>
-                                <Text style={styles.legend}>mg</Text>
-                            </View>
-                        </View>
-                          
                     </View>
-                    
+                    <View style={styles.formItem}>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>Carbohidratos</Text>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Input value={carbohidratos} onChangeText={(text) => setCarbohidratos(text)} keyboardType="numeric" />
+                        </View>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>g</Text>
+                        </View>
+                    </View>
+                    <View style={styles.formItem}>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>Grasas</Text>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Input value={grasas} onChangeText={(text) => setGrasas(text)} keyboardType="numeric" />
+                        </View>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>g</Text>
+                        </View>
+                    </View>
+                    <View style={styles.formItem}>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>Proteinas</Text>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Input value={proteinas} onChangeText={(text) => setProteinas(text)} keyboardType="numeric" />
+                        </View>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>g</Text>
+                        </View>
+                    </View>
+                    <View style={styles.formItem}>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>Sodio</Text>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Input value={sodio} onChangeText={(text) => setSodio(text)} keyboardType="numeric" />
+                        </View>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>mg</Text>
+                        </View>
+                    </View>
+                </View>
             </View>
-
             <IngredientesComponent ingredientesArray={ingredients} handleModalClose={handleIngredientModalClose} />
 
             <StepsComponent stepsArray={pasos}   handleModalClose={handleStepModalClose}     />
+
+            <Button onPress={handleCreateRecipe}>Create Recipe</Button>
 
 
             </ScrollView>   
