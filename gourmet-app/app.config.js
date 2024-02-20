@@ -41,6 +41,18 @@ export default{
       "eas": {
         "projectId": "a98db635-6103-4fdd-8624-979064f24dde"
       }
-    }
+    },
+    "plugins": [
+      ["expo-camera", {
+        "cameraPermission": "Allow app to access your camera."
+      }],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow app to access your photos."
+        }
+      ]
+    ]
   }
+  
 }
