@@ -1,4 +1,4 @@
-import React, { useState, useRef  } from "react";
+import React, { useState, useRef, useEffect  } from "react";
 import { Button,  Icon,  Input } from "@rneui/themed";
 import {  View, StyleSheet, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import TouchableCategory from "../components/TouchableCategory/TouchableCategory";
@@ -24,17 +24,12 @@ const CreateRecipeScreen = () => {
     const [ingredients, setIngredients] = useState([]);
     const [nutritionalInfo, setNutritionalInfo] = useState([ ]);
     const [pasos, setPasos] = useState([]);
-    const ingredientesArray = [ {id: 1, name: 'Tomate', cantidad:"2"}, {id: 2, name: 'Lechuga', cantidad : "1"}, {id: 3, name: 'Cebolla', cantidad : "3"}, {id: 4, name: 'Azucar',cantidad : "100g"}]
-    const nutritionalInformation = [ {id: 1, name: 'Calorias', value: "100"}, {id: 2, name: 'Proteinas', value: "10"}, {id: 3, name: 'Grasas', value: "5"}, {id: 4, name: 'Carbohidratos', value: "20"}]
-    const pasosReceta= [ {id: 1, name: '1', description: "Cortar el tomate"}, {id: 2, name: '2', description: "Cortar la lechuga"}, {id: 3, name: '3', description: "Cortar la cebolla"}, {id: 4, name: '4', description: "Cortar el pepino"}]
-    const arrayPhotos=[
-        null, // Elemento vacío al principio para centrar la primera imagen
-        "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
-        "https://s1.eestatic.com/2015/06/10/cocinillas/cocinillas_40006005_116187701_1706x960.jpg",
-    ]
+   
     const categoriesArray = [ {id: 1, name: 'Vegetariana'}, {id: 2, name: 'Gluten Free'}, {id: 3, name: 'Cena'}, {id: 4, name: 'Postre'},{id: 5, name: 'Mediteranea'}, {id: 6, name: 'Vegana'}, {id: 7, name: 'Sin TACC'}, {id: 8, name: 'Celiaca'}]
-    const [visible, setIsVisible] = useState(false);
 
+    useEffect(() => {
+        setImagesArray([])
+    }, [])
 
 
     // componente seleccionar sacar foto o galeria 
@@ -334,6 +329,8 @@ const CreateRecipeScreen = () => {
         setImage(result.assets[0].uri);
         }
     };
+
+    
 
     return(
         <View style={styles.container}>
