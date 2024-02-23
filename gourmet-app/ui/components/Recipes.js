@@ -8,14 +8,17 @@ import { Button } from '@rneui/themed';
 export default function Recipes() {
     const [recipes, setRecipes] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
 
     const getRecipes = async () => {
         try {
             console.log("entrando a getRecipes");
             const data = await fetch(
-                `https://ad-backend-production.up.railway.app/api/recipes/` // Endpoint para obtener todas las recetas
+                `https://ad-backend-production.up.railway.app/api/recipes/search/by?limit=100` // Endpoint para obtener todas las recetas
             );
             const json = await data.json();
+            console.log(json)
             return json;
         } catch (error) {
             console.log(error);
@@ -27,7 +30,8 @@ export default function Recipes() {
         async function fetchRecipes() {
             try {
                 const recipesData = await getRecipes();
-                setRecipes(recipesData);
+                setRecipes(recipesData.recipes);
+                console.log(recipes)
             } catch (error) {
                 console.error('Error fetching recipes:', error);
             }
@@ -44,7 +48,7 @@ export default function Recipes() {
     const fetchRecipes = async () => {
         try {
             const recipesData = await getRecipes();
-            setRecipes(recipesData);
+            setRecipes(recipesData.recipes);
         } catch (error) {
             console.error('Error fetching recipes:', error);
         }
@@ -87,6 +91,7 @@ export default function Recipes() {
                      onEndReachedThreshold={0.1}
                  />
                  <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
+             
              </View>
          </View>
         // <View style={styles.container}>
