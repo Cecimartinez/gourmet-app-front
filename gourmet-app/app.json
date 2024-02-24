@@ -15,28 +15,42 @@
       "backgroundColor": "#ff9900"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ceciliamartinezz.gourmetapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon-gourmet.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.ceciliamartinezz.gourmetapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      ["expo-camera", {
-        "cameraPermission": "Allow app to access your camera."
-      }],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow app to access your camera."
+        }
+      ],
       [
         "expo-image-picker",
         {
           "photosPermission": "Allow app to access your photos."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a98db635-6103-4fdd-8624-979064f24dde"
+      }
+    },
+    "scheme":"gourmet-app"
   }
-  
 }
