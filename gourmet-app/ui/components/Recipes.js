@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image, StyleSheet, FlatList , FlatList  } from 'react-native';
+import { View, Text, Pressable, Image, StyleSheet , FlatList  } from 'react-native';
 import MasonryList from '@react-native-seoul/masonry-list';
 // import { getRecipes } from '../../api/Recipe';
 import { Button } from '@rneui/themed';
