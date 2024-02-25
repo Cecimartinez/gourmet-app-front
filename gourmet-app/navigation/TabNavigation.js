@@ -2,12 +2,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import FavoriteRecipesScreen from '../ui/screens/FavoriteRecipesScreen';
-import SearchRecipesScreen from '../ui/screens/SearchRecipesScreen';
+
 import CreateRecipeScreen from '../ui/screens/CreateRecipeScreen';
 import ProfileScreen from '../ui/screens/ProfileScreen';
-import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialIcons, MaterialCommunityIcons  } from '@expo/vector-icons';
 import HomeScreen from '../ui/screens/HomeScreen';
 import { View } from 'react-native';
+import RecipesUser from '../ui/components/Recipes';
+import { createStackNavigator } from '@react-navigation/stack';
+import { BookOutlined} from '@ant-design/icons';
+import SearchRecipesScreen from '../ui/screens/MyRecipeScreen';
+import MyRecipeScreen from '../ui/screens/MyRecipeScreen';
+
+const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 const screenOptions = {
@@ -26,8 +33,16 @@ const screenOptions = {
 
 export default function TabNavigation() {
     return (
+        
+      
+       
+
         <NavigationContainer>
+
+
+                  
             <Tab.Navigator screenOptions={screenOptions}>
+            
                 <Tab.Screen  
                 name="Home"  
                 component={HomeScreen}  
@@ -43,13 +58,16 @@ export default function TabNavigation() {
                 />
 
                 <Tab.Screen  
-                name="Search"  
-                component={SearchRecipesScreen}  
+                name="MyRecipes"  
+                component={MyRecipeScreen}  
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
+                           
                             <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                <AntDesign name="search1" size={24} color={focused ? "#F39E0B" : "#111"} />
+                                <MaterialCommunityIcons name="notebook" size={24} color={focused ? "#F39E0B" : "#111"} />
+                                
+                                
                             </View>
                         );
                     }
@@ -95,7 +113,20 @@ export default function TabNavigation() {
                     }
                 }}
                 />
+
+
+               
+           
+               
             </Tab.Navigator>
+         
+           
+           
         </NavigationContainer>
     );
 }
+
+
+
+
+

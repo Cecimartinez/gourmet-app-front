@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.0",
     "@expo/vector-icons": "^14.0.0",
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-google-signin/google-signin": "^11.0.0",
@@ -16,17 +17,18 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.13",
+    "@react-navigation/stack": "^6.3.23",
     "@rneui/themed": "^4.0.0-rc.8",
     "@types/react": "~18.2.45",
     "axios": "^1.4.0",
     "expo": "~50.0.4",
+    "expo-camera": "^14.0.5",
     "expo-dev-client": "~3.3.8",
+    "expo-image-picker": "~14.7.1",
+    "expo-permissions": "^14.4.0",
     "expo-splash-screen": "~0.26.4",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.8.0",
-    "expo-camera": "^14.0.5",
-    "expo-image-picker": "~14.7.1",
-    "expo-permissions": "^14.4.0",
     "react": "18.2.0",
     "react-native": "^0.73.4",
     "react-native-actionsheet": "^2.4.2",
@@ -48,8 +50,8 @@
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
     "@types/react-native": "^0.73.0",
-    "typescript": "^5.3.0",
-    "@types/react-native-actionsheet": "^2.4.7"
+    "@types/react-native-actionsheet": "^2.4.7",
+    "typescript": "^5.3.0"
   },
   "private": true
 }
