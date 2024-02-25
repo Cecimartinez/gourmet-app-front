@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image, StyleSheet, FlatList  } from 'react-native';
+import { View, Text, Pressable, Image, StyleSheet, FlatList , FlatList  } from 'react-native';
 import MasonryList from '@react-native-seoul/masonry-list';
 // import { getRecipes } from '../../api/Recipe';
 import { Button } from '@rneui/themed';
@@ -7,15 +7,15 @@ import { Button } from '@rneui/themed';
 
 export default function Recipes() {
     const [recipes, setRecipes] = useState([]);
-    const [refreshing, setRefreshing] = useState(false);
 
     const getRecipes = async () => {
         try {
             console.log("entrando a getRecipes");
             const data = await fetch(
-                `https://ad-backend-production.up.railway.app/api/recipes/` // Endpoint para obtener todas las recetas
+                `https://ad-backend-production.up.railway.app/api/recipes/search/by?limit=100` // Endpoint para obtener todas las recetas
             );
             const json = await data.json();
+            console.log(json)
             return json;
         } catch (error) {
             console.log(error);
@@ -27,7 +27,8 @@ export default function Recipes() {
         async function fetchRecipes() {
             try {
                 const recipesData = await getRecipes();
-                setRecipes(recipesData);
+                setRecipes(recipesData.recipes);
+                console.log(recipes)
             } catch (error) {
                 console.error('Error fetching recipes:', error);
             }
@@ -35,27 +36,6 @@ export default function Recipes() {
 
         fetchRecipes();
     }, []);
-
-    useEffect(() => {
-        fetchRecipes();
-    }, []);
-
-
-    const fetchRecipes = async () => {
-        try {
-            const recipesData = await getRecipes();
-            setRecipes(recipesData);
-        } catch (error) {
-            console.error('Error fetching recipes:', error);
-        }
-    };
-
-    const handleRefresh = () => {
-        setRefreshing(true);
-        fetchRecipes().finally(() => setRefreshing(false));
-    };
-
-
     const handleButtonPress = () => {
         console.log('Button pressed');
         async function fetchRecipes() {
@@ -76,19 +56,33 @@ export default function Recipes() {
     }
 
     return (
-         <View style={styles.container}>
-             <View style={styles.masonryList}>
-                 <MasonryList
-                     data={recipes}
-                     keyExtractor={(item) => item._id}
-                     numColumns={2}
-                     showsVerticalScrollIndicator={false}
-                     renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
-                     onEndReachedThreshold={0.1}
-                 />
+          <View style={styles.container}>
+              <View style={styles.masonryList}>
+                  <MasonryList
+                      data={recipes}
+                      keyExtractor={(item) => item._id}
+                      numColumns={2}
+                      showsVerticalScrollIndicator={false}
+                      renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
+                      onEndReachedThreshold={0.1}
+                  />
                  <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
+             
+                  <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
              </View>
-         </View>
+          </View>
+        // <View style={styles.container}>
+        //     <FlatList
+        //         data={recipes}
+        //         keyExtractor={(item) => item._id}
+        //         numColumns={2}
+        //         showsVerticalScrollIndicator={false}
+        //         renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
+        //         onEndReachedThreshold={0.1}
+        //         refreshing={refreshing}
+        //         onRefresh={handleRefresh}
+        //     />
+        // </View>
         // <View style={styles.container}>
         //     <FlatList
         //         data={recipes}
