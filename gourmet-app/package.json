@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
     "@react-native-async-storage/async-storage": "^1.21.0",
+    "@react-native-google-signin/google-signin": "^11.0.0",
     "@react-native-seoul/masonry-list": "^1.4.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.10",
@@ -20,6 +21,7 @@
     "axios": "^1.4.0",
     "expo": "~50.0.4",
     "expo-camera": "^14.0.5",
+    "expo-dev-client": "~3.3.8",
     "expo-image-picker": "~14.7.1",
     "expo-permissions": "^14.4.0",
     "expo-splash-screen": "~0.26.4",
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/react-native": "^0.73.0",
     "@types/react-native-actionsheet": "^2.4.7"
   },
   "private": true
