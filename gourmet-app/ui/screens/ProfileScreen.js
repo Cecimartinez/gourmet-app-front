@@ -32,12 +32,7 @@ export default function ProfileScreen() {
                     <Text style={styles.userName}>Ana Rodriguez</Text>
                        
                        
-                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingLeft:100, paddingRight:100, marginTop:50}} 
-                         onPress={() => navigation.navigate('RecipesUser')}>
-
-                        <SimpleLineIcons name="notebook" style={{color:'#FFA200', fontSize:15, paddingRight:10, justifyContent:'flex-start'}}/>
-                            <Text style={{color:'#FFA200', fontWeight:'bold', fontSize:15}}>Mis Recetas</Text>
-                        </TouchableOpacity>
+                     
                    
                    
                    

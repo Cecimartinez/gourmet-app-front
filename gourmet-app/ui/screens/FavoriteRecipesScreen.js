@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from 'react';
-import { View, Text, FlatList, StyleSheet,Image,TouchableOpacity } from 'react-native'; // Asegúrate de importar FlatList
+import { View, Text, FlatList, StyleSheet,Image,TouchableOpacity,ScrollView } from 'react-native'; // Asegúrate de importar FlatList
 import { mockRecipes } from '../../mock/mockRecipes'; // Cambia la ruta según tu proyecto
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,12 +9,28 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 export default function FavoriteRecipesScreen() {
 
+ 
+ 
     const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
    
   
     
 
   const navigation = useNavigation(); // Obtiene la función de navegación
+
+  const handleBookmarkClick = (id) => {
+    fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278/${id}`, {
+      method: 'POST'
+    }).then((response) => response.json())
+    .then((data) => {
+      console.log('Receta añadida a favoritos:', data);
+    })
+    .catch((error) => {
+      console.error('Error al añadir la receta a favoritos:', error);
+    });
+    
+  };
+
   useEffect(() => {
     // Realiza una solicitud HTTP para obtener las recetas desde tu backend
     fetch('https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278')
@@ -26,7 +42,7 @@ export default function FavoriteRecipesScreen() {
       .catch((error) => {
         console.error('Error al obtener las recetas:', error);
       });
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, [recipes]); // Se ejecuta solo una vez al montar el componente
 
  
   
@@ -47,7 +63,9 @@ export default function FavoriteRecipesScreen() {
                 <Image source={{uri:item.photo[0]}} style={styles.recipeImage}/>
                 <View style={styles.recipeInformation}>
                     <Text style={styles.recipeName}>{item.title}</Text>
-                    <Text style={styles.recipeDescription}>{item.description}</Text>
+                    
+                    <Text style={styles.recipeDescription} numberOfLines={3}>{item.description}</Text>
+                   
                     <View style={styles.recipeIndicators}>
                       
                       <MaterialCommunityIcons name="clock" size={24} color="black" style={styles.timeImage} />
@@ -58,7 +76,15 @@ export default function FavoriteRecipesScreen() {
                      
                       <MaterialIcons name="star-rate" size={24} color="gold" style={styles.recipeStarsIcon}/>
                       <Text style={styles.recipeStars}>{item.rating}</Text>
-                      <FontAwesome name="bookmark" size={24} color="orange" style={styles.bookmark}/>
+
+
+                      <TouchableOpacity
+                      onPress={() => handleBookmarkClick(item._id)}
+                      activeOpacity={0.6} // Define la opacidad al hacer clic
+                      style={styles.bookmark}
+                     >
+                        <FontAwesome name="bookmark" size={24} color="orange" />
+                       </TouchableOpacity>
                       
                         
                     </View>
@@ -128,6 +154,7 @@ recipeImage:{
   },
   
   recipeDescription: {
+    
     marginLeft:5,    
     alignSelf:'flex-start',
     fontSize: 16,

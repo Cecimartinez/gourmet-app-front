@@ -11,33 +11,32 @@ export default function MyRecipeScreen() {
     
   const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
    
-  const handleBookmarkClick = () => {
-  setIsBookmarked(!isBookmarked); // Cambia el estado a su opuesto
-
-  if (isBookmarked) {
-    // Realiza la acción para eliminar el marcador de tus favoritos
-    // (por ejemplo, hacer un push a tu historial de navegación).
-    // Aquí puedes usar la función de navegación de tu framework o librería.
-    console.log('Marcador eliminado');
-  } else {
-    console.log('Marcador agregado');
-  }
-};
-    
+  // Función para manejar el evento de clic en el botón de favoritos para sacar y poner del mismo endpoint de favoritos
+  const handleBookmarkClick = (id) => {
+    fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278/${id}`, {
+      method: 'POST'
+    }).then((response) => response.json())
+    .then((data) => {
+      console.log('Receta añadida a favoritos:', data);
+    })
+    .catch((error) => {
+      console.error('Error al añadir la receta a favoritos:', error);
+    });
+  };
 
   const navigation = useNavigation(); // Obtiene la función de navegación
   useEffect(() => {
     // Realiza una solicitud HTTP para obtener las recetas desde tu backend
-    fetch('https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278')
+    fetch('https://ad-backend-production.up.railway.app/api/recipes/user/64a60d14592f32e512ada278')
       .then((response) => response.json())
       .then((data) => {
         // Actualiza el estado con las recetas obtenidas
-        setRecipes(data);
+        setRecipes(data.recipes);
       })
       .catch((error) => {
         console.error('Error al obtener las recetas:', error);
       });
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, [recipes]); // Se ejecuta solo una vez al montar el componente
 
     return (
         <View style={styles.container}>
@@ -56,7 +55,7 @@ export default function MyRecipeScreen() {
               <Image source={{uri:item.photo[0]}} style={styles.recipeImage}/>
               <View style={styles.recipeInformation}>
                   <Text style={styles.recipeName}>{item.title}</Text>
-                  <Text style={styles.recipeDescription}>{item.description}</Text>
+                  <Text style={styles.recipeDescription} numberOfLines={3}>{item.description}</Text>
                   <View style={styles.recipeIndicators}>
                     
                     <MaterialCommunityIcons name="clock" size={24} color="black" style={styles.timeImage} />
@@ -67,7 +66,13 @@ export default function MyRecipeScreen() {
                    
                     <MaterialIcons name="star-rate" size={24} color="gold" style={styles.recipeStarsIcon}/>
                     <Text style={styles.recipeStars}>{item.rating}</Text>
-                    <FontAwesome onClick={handleBookmarkClick} name="bookmark" size={24} color="orange" style={styles.bookmark}/>
+                    <TouchableOpacity
+                       onPress={() => handleBookmarkClick(item._id)}
+                     activeOpacity={0.6} // Define la opacidad al hacer clic
+        style={styles.bookmark}
+      >
+        <FontAwesome name="bookmark" size={24} color="black" />
+      </TouchableOpacity>
                     
                       
                   </View>
