@@ -61,7 +61,7 @@ const AddStepModal = ({ visible, onClose, selectedStep }) => {
                             color="#FFA200"
                             radius="lg"
                             onPress={handleSubmit}
-                            disabled={step.trim() === '' || detail.trim() === ''}
+                            disabled={ detail.trim() === ''}
                         />
                         {selectedStep && (   //para que solo se vea cuando es para editar un ingrediente
                             <Button

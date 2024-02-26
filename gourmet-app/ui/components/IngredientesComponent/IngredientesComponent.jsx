@@ -12,10 +12,10 @@ const IngredientesComponent = ({ ingredientesArray, handleModalClose }) => {
         setVisible(true);
     };
 
-    const handleCloseModal = ({ ingredient, amount }) => {
+    const handleCloseModal = ({ ingredient, cantidad }) => {
         setVisible(false);
         setSelectedIngredient(null);
-        handleModalClose({ ingredient, amount });
+        handleModalClose({ ingredient, cantidad });
     };
 
     useEffect(() => {

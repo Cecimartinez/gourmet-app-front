@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react";
 import { Modal, View, StyleSheet, Text } from "react-native";
 const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
     const [ingredient, setIngredient] = useState('');
-    const [amount, setAmount] = useState('');
+    const [cantidad, setcantidad] = useState('');
     const [updatedIngredient, setUpdatedIngredient] = useState(false);
     const [buttonText, setButtonText] = useState('Agregar');
 
     useEffect(() => {
         if (selectedIngredient) {
             setIngredient(selectedIngredient.name);
-            setAmount(selectedIngredient.cantidad);
+            setcantidad(selectedIngredient.cantidad);
             setUpdatedIngredient(true);
             setButtonText('Editar');
         } else {
             setIngredient('');
-            setAmount('');
+            setcantidad('');
             setButtonText('Agregar');
             setUpdatedIngredient(false);
         }
@@ -23,15 +23,15 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
 
     const handleSubmit = () => {
         if (updatedIngredient) {
-            onClose({ ingredient, amount, updatedIngredient });
+            onClose({ ingredient, cantidad, updatedIngredient });
         } else {
-            onClose({ ingredient, amount });
+            onClose({ ingredient, cantidad });
         }
     };
     const handleSubmitEliminar = () => {
-        setAmount('');
+        setcantidad('');
         setUpdatedIngredient('');
-        onClose({ ingredient, amount: '', updatedIngredient });
+        onClose({ ingredient, cantidad: '', updatedIngredient });
     }
 
     return (
@@ -46,7 +46,7 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
                             <Input value={ingredient} placeholder="Ingrediente" onChangeText={setIngredient} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Input value={amount} placeholder="Cantidad" onChangeText={setAmount} keyboardType="numeric"  />
+                            <Input value={cantidad} placeholder="Cantidad" onChangeText={setcantidad} keyboardType="numeric"  />
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -56,7 +56,7 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
                             color="#FFA200"
                             radius="lg"
                             onPress={handleSubmit}
-                            disabled={ingredient.trim() === '' || amount.trim() === ''}
+                            disabled={ingredient.trim() === '' || cantidad  == 0}
                         />
                       {updatedIngredient && (   //para que solo se vea cuando es para editar un ingrediente
                             <Button

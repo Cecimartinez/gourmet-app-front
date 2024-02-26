@@ -7,6 +7,7 @@ import AddStepModal from '../AddStepModal';
 const StepsComponent = ({ stepsArray, handleModalClose }) => {
     const [visible, setVisible] = useState(false);
     const [selectedStep, setSelectedStep] = useState(null);
+    console.log("steps",stepsArray)
 
     const openModal = (step) => {
         setSelectedStep(step);

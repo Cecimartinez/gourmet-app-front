@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TextInput } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function Search() {
+export default function Search({ activeSearch, setActiveSearch}) {
     return (
         <View style={styles.container}>
             <View style={styles.iconContainer}>
@@ -12,6 +12,7 @@ export default function Search() {
                 placeholder="Search.."
                 placeholderTextColor={'gray'}
                 style={styles.input}
+                onChangeText={(text) => setActiveSearch(text)}
             />
         </View>
     );

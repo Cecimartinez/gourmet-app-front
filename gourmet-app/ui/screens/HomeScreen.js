@@ -1,13 +1,18 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, Modal } from 'react-native'
 import Search from '../components/Search'
 import Categories from '../components/Categories'
 import Recipes from '../components/Recipes'
+import { Button } from '@rneui/themed'
+import { useNavigation } from '@react-navigation/native'
 
 export default function HomeScreen() {
     
-    const [activeCategory, setActiveCategory] =useState('Veggie')
+    const [activeCategory, setActiveCategory] =useState(null)
+    const [activeSearch, setActiveSearch] =useState(null)
+
+  
 
     return (
         <View style={{flex: 1}}>
@@ -26,14 +31,18 @@ export default function HomeScreen() {
                     <Text style={{fontSize: 25, fontWeight: 'bold', color: '#555', textAlign: 'left'}}>stay at <Text style={{color: '#ff9900'}}>home</Text></Text>
                 </View>
 
-                <Search/>
+                <Search activeSearch={activeSearch} setActiveSearch={setActiveSearch} />
                 <Categories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
-            
+
+           
+
                 <View>
-                    <Recipes/>
-                </View>    
+                <Recipes activeCategory={activeCategory}  activeSearch={activeSearch} />
+                                </View>    
             
             </ScrollView>
         </View>
     )
 }
+
+

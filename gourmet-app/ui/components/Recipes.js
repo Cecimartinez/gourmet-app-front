@@ -1,46 +1,105 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image, StyleSheet, FlatList  } from 'react-native';
+import { View, Text, Pressable, Image, StyleSheet, FlatList, TouchableOpacity  } from 'react-native';
 import MasonryList from '@react-native-seoul/masonry-list';
 // import { getRecipes } from '../../api/Recipe';
 import { Button } from '@rneui/themed';
 
 
-export default function Recipes() {
+export default function Recipes({ activeCategory, activeSearch }) {
     const [recipes, setRecipes] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
+    const [error, setError] = useState(null);
+    
 
-    const getRecipes = async () => {
+    useEffect(() => {
+        const fetchFilteredRecipes = async () => {
+            try {
+                // const filteredRecipes = await getRecipes(activeCategory);
+                const filteredRecipes = await getRecipes(activeCategory, activeSearch);
+                setRecipes(filteredRecipes.recipes);
+                setError(null);
+            } catch (error) {
+                console.error('Error fetching filtered recipes:', error);
+                setError('Error fetching filtered recipes');
+            }
+        };
+
+        if (activeCategory) {
+            fetchFilteredRecipes();
+        } else {
+            fetchAllRecipes();
+        }
+    }, [activeCategory,activeSearch]);
+
+
+
+    // //nuevo category
+    // const getRecipes = async (category = null) => {
+    //     try {
+    //         let url = 'https://ad-backend-production.up.railway.app/api/recipes/search/by?';
+            
+    //         if (category) {
+    //             console.log("entra al category get recipe");
+    //             url += `&category[]=${category}`;
+    //         } 
+    //         if (category === 'All' || !category) {
+    //             console.log("entra al all get recipe");
+    //             url = 'https://ad-backend-production.up.railway.app/api/recipes/search/by?limit=100';
+    //         }
+            
+    //         const response = await fetch(url);
+    //         const data = await response.json();
+    //         return data;
+    //     } catch (error) {
+    //         throw new Error('Error fetching recipes');
+    //     }
+    // };
+    
+//nuevo con category y search
+    const getRecipes = async (category = null, searchTerm = null) => {
         try {
-            console.log("entrando a getRecipes");
-            const data = await fetch(
-                `https://ad-backend-production.up.railway.app/api/recipes/search/by?limit=100` // Endpoint para obtener todas las recetas
-            );
-            const json = await data.json();
-            console.log(json)
-            return json;
+            let url = 'https://ad-backend-production.up.railway.app/api/recipes/search/by?';
+    
+            // Construir la URL según los parámetros recibidos
+            if (category && category !== 'All') {
+                url += `category[]=${category}&`;
+            }
+            if (searchTerm) {
+                url += `title=${encodeURIComponent(searchTerm)}&`;
+            }
+    
+            // Si no hay categoría o es 'All', establecer el límite como 100
+            if (!category || category === 'All') {
+                url += 'limit=100';
+            }
+    
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
         } catch (error) {
-            console.log(error);
-            throw error;
+            throw new Error('Error fetching recipes');
         }
     };
+    
 
+
+
+    
     useEffect(() => {
         async function fetchRecipes() {
             try {
                 const recipesData = await getRecipes();
                 setRecipes(recipesData.recipes);
-                console.log(recipes)
+                console.log(recipes);
+                setError(null); // Limpiar cualquier error previo si la obtención de recetas es exitosa
             } catch (error) {
-                console.error('Error fetching recipes:', error);
+                console.error('Error fetching recipes 2:', error);
+                setError(error.message); // Establecer el mensaje de error en el estado si hay un error
             }
         }
 
-        fetchRecipes();
-    }, []);
-
-    useEffect(() => {
         fetchRecipes();
     }, []);
 
@@ -49,35 +108,94 @@ export default function Recipes() {
         try {
             const recipesData = await getRecipes();
             setRecipes(recipesData.recipes);
+            console.log(recipes);
+            setError(null); // Limpiar cualquier error previo si la obtención de recetas es exitosa
         } catch (error) {
             console.error('Error fetching recipes:', error);
-        }
-    };
-
-    const handleRefresh = () => {
-        setRefreshing(true);
-        fetchRecipes().finally(() => setRefreshing(false));
+            setError(error.message); // Establecer el mensaje de error en el estado si hay un error
+        }        
     };
 
 
+        //este va catregory
+    // const handleRefresh = () => {
+    //     setRefreshing(true);
+    //     fetchRecipes().finally(() => setRefreshing(false));
+    // };
+
+
+    // const handleButtonPress = () => {
+    //     console.log('Button pressed');
+    //     async function fetchRecipes() {
+    //         try {
+    //             const recipesData = await getRecipes();
+    //             console.log("paso")
+    //             setRecipes(recipesData.recipes);
+    //         } catch (error) {
+    //             console.error('Error fetching recipes:', error);
+    //             console.log("error")
+    //         }
+    //     }
+    //     console.log('Button pasa');
+
+    //     fetchRecipes();
+
+
+    // }
     const handleButtonPress = () => {
         console.log('Button pressed');
-        async function fetchRecipes() {
-            try {
-                const recipesData = await getRecipes();
-                console.log("paso")
-                setRecipes(recipesData);
-            } catch (error) {
-                console.error('Error fetching recipes:', error);
-                console.log("error")
-            }
-        }
-        console.log('Button pasa');
-
-        fetchRecipes();
-
-
+        fetchRecipes(); // Llamar a la función para obtener recetas cuando se presione el botón
     }
+
+    
+    const handleCloseError = () => {
+        setError(null); // Limpiar el estado de error al cerrar el mensaje
+    }
+
+    useEffect(() => {
+        const fetchAllRecipes = async () => {
+            try {
+                const allRecipes = await getRecipes();
+                setRecipes(allRecipes.recipes);
+                setError(null);
+            } catch (error) {
+                console.error('Error fetching recipes 3:', error);
+                setError('Error fetching recipes');
+            }
+        };
+    
+        fetchAllRecipes();
+    }, []);
+    
+
+    const fetchAllRecipes = async () => {
+        try {
+            const allRecipes = await getRecipes();
+            setRecipes(allRecipes.recipes);
+            setError(null);
+        } catch (error) {
+            console.error('Error fetching recipes 4:', error);
+            setError('Error fetching recipes');
+        }
+    }
+
+
+
+ 
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        try {
+            const refreshedRecipes = await getRecipes(activeCategory);
+            setRecipes(refreshedRecipes.recipes);
+            setError(null);
+        } catch (error) {
+            console.error('Error refreshing recipes:', error);
+            setError('Error refreshing recipes');
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
 
     return (
          <View style={styles.container}>
@@ -91,7 +209,14 @@ export default function Recipes() {
                      onEndReachedThreshold={0.1}
                  />
                  <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
-             
+                 {error && (
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{error}</Text>
+                        <TouchableOpacity style={styles.closeButton} onPress={handleCloseError}>
+                            <Text style={styles.closeButtonText}>X</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
              </View>
          </View>
         // <View style={styles.container}>
@@ -188,5 +313,9 @@ const styles = StyleSheet.create({
         fontSize:  13,
         marginTop:  10,
         fontWeight: 'bold',
+    },
+    errorText: {
+        color: 'red',
+        marginTop: 10,
     },
 });
