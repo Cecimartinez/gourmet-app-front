@@ -5,18 +5,37 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import RecipeScreen from './RecipeScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 
+
+const Stack = createNativeStackNavigator();
 
 export default function FavoriteRecipesScreen() {
 
+  
  
  
     const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
    
   
     
-
+    
   const navigation = useNavigation(); // Obtiene la función de navegación
+
+
+  const handleNavigateToRecipe = () => {
+   
+    
+
+    navigation.navigate('RecipeDetail');
+  };
+
+
+
+
+
 
   const handleBookmarkClick = (id) => {
     fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278/${id}`, {
@@ -44,9 +63,11 @@ export default function FavoriteRecipesScreen() {
       });
   }, [recipes]); // Se ejecuta solo una vez al montar el componente
 
+
  
   
     return (
+
         <View style={styles.container}>
           <Text style={styles.title}>Recetas Favoritas</Text>
           
@@ -57,7 +78,7 @@ export default function FavoriteRecipesScreen() {
             
             <View>
             <TouchableOpacity style={styles.recipeItem}
-            onPress={() => navigation.useNavigate("Receta" , { recipeId: item._id })} // Navega a la página de detalles
+            onPress={handleNavigateToRecipe} // Navega a la página de detalles
              >
                
                 <Image source={{uri:item.photo[0]}} style={styles.recipeImage}/>
@@ -97,6 +118,7 @@ export default function FavoriteRecipesScreen() {
           />
           
         </View>
+       
       );
     }
 
