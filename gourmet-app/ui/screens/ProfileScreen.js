@@ -36,10 +36,10 @@ export default function ProfileScreen() {
                 <Text style={{color:"#FFA200", fontSize:18, fontWeight:"500", paddingLeft:10}} >User Profile</Text>
                 <View style={{alignItems:'center', justifyContent:'center', width:'auto', marginTop:100}}>
                     <Image
-                        source={require('../../assets/images/profile.jpg')}
+                        source={require('../../assets/images/patito.jpg')}
                         style={styles.profileImage}
                     />   
-                    <Text style={styles.userName}>Ana Rodriguez</Text>
+                    <Text style={styles.userName}>Maximiliano Roisentul</Text>
                        
                         <TouchableOpacity
                                 style={[styles.button, { backgroundColor: '#FFA200', paddingLeft:100, paddingRight:100 , marginTop:150}]}
