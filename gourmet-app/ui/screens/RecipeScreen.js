@@ -11,7 +11,6 @@ import Ingredients from '../components/ViewRecipeContent/Ingredients';
 import Steps from '../components/ViewRecipeContent/Steps';
 import Video from '../components/ViewRecipeContent/Video';
 import InformacionNutricional from '../components/ViewRecipeContent/InformacionNutricional';
-import Lightbox from 'react-native-lightbox';
 
 
 
@@ -28,6 +27,7 @@ export default function RecipeScreen({ route, navigation, navigator }) {
         { id: 3, name: 'Video' },
         { id: 4, name: 'Información Nutricional' },
     ];
+
 
 
     const { recipe } = route.params;
@@ -65,9 +65,9 @@ export default function RecipeScreen({ route, navigation, navigator }) {
 
         <View style={styles.container}>
 
-                    
-                           <Image source={{ uri: recipe.photo[0] }} style={styles.recipeImage} />
-                
+
+            <Image source={{ uri: recipe.photo[0] }} style={styles.recipeImage} />
+
 
 
             <View>
@@ -80,12 +80,12 @@ export default function RecipeScreen({ route, navigation, navigator }) {
                     <FontAwesome5 name="fire-alt" size={24} color="gold" style={styles.recipeStarsIcon} />
                     <Text style={styles.recipeStars}>{recipe.calorie}</Text>
                     <TouchableOpacity
-                    onPress={() => handleBookmarkClick(recipe._id)}
-                    activeOpacity={0.6} // Define la opacidad al hacer clic
-                    style={styles.bookmark}
-                  >
-                    <FontAwesome name="bookmark" size={24} color="orange" />
-                  </TouchableOpacity>
+                        onPress={() => handleBookmarkClick(recipe._id)}
+                        activeOpacity={0.6} // Define la opacidad al hacer clic
+                        style={styles.bookmark}
+                    >
+                        <FontAwesome name="bookmark" size={24} color="orange" />
+                    </TouchableOpacity>
 
 
 
@@ -120,8 +120,8 @@ export default function RecipeScreen({ route, navigation, navigator }) {
 
                     {selectedCategory === categoriesArray[0].id && <Ingredients ingredients={recipe.ingredients} />}
                     {selectedCategory === categoriesArray[1].id && <Steps steps={recipe.instructions} />}
-                    {selectedCategory === categoriesArray[2].id && <Video video={recipe.video}/>}
-                    {selectedCategory === categoriesArray[3].id && <InformacionNutricional calorie={recipe.calorie} fat={recipe.fat} protein={recipe.protein} sodium={recipe.sodium}/>}
+                    {selectedCategory === categoriesArray[2].id && <Video video={recipe.video} />}
+                    {selectedCategory === categoriesArray[3].id && <InformacionNutricional calorie={recipe.calorie} fat={recipe.fat} protein={recipe.protein} sodium={recipe.sodium} />}
                 </View>
 
             </View>
@@ -226,7 +226,11 @@ const styles = StyleSheet.create({
         marginRight: 10,
 
 
-    }, recipeStarsIcon: {
+    }, timeImage:{  marginTop: 7,
+        alignSelf: 'flex-start',
+        marginBottom: 30,},
+    
+    recipeStarsIcon: {
         marginTop: 7,
         alignSelf: 'flex-start',
         marginBottom: 30,
@@ -238,8 +242,8 @@ const styles = StyleSheet.create({
         marginTop: 7,
         alignSelf: 'flex-start',
         marginBottom: 30,
-    
-      },
+
+    },
     ingredientsContainer: {
         display: 'flex',
         justifyContent: 'space-between',
