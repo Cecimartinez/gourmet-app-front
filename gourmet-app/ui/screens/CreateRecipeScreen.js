@@ -390,13 +390,12 @@ const CreateRecipeScreen = ({route : route}) => {
             formData.append('title', name);
             formData.append('description', description);
             formData.append('user', "64a60d14592f32e512ada278"); //  MUY IMPORTANTE 
-            formData.append('requiredTime', "20"); 
             formData.append('portion', "2"); 
             formData.append('hashtag', "Ensalada"); 
             //formData.append('calorie', "2");
             formData.append('calorie', calories.toString());
-            //console.log("requiredTime:",requiredTime.toString())
-            //formData.append('requiredTime', requiredTime.toString());
+
+            formData.append('requiredTime', requiredTime.toString());
 
             //formData.append('fat', "2");
             formData.append('fat', grasas.toString());
