@@ -56,9 +56,10 @@ export default function TabNavigation() {
                 }}
                 />
                 
-                {/* <Tab.Screen  
+                 <Tab.Screen  
                 name="Create"  
                 component={CreateRecipeScreen}  
+                initialParams={{ id: null }} // Aquí defines el parámetro que deseas enviar
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
@@ -68,8 +69,8 @@ export default function TabNavigation() {
                         );
                     }
                 }}   
-                /> */}
-                 <Tab.Screen  
+                />  
+                  {/* <Tab.Screen  
                     name="Create"  
                     component={CreateRecipeScreen}  
                     initialParams={{ id: '65d3f9da38accc150cafd3d1' }} // Aquí defines el parámetro que deseas enviar
@@ -82,7 +83,7 @@ export default function TabNavigation() {
                             );
                         }
                     }} 
-                /> 
+                />   */}
                 <Tab.Screen  
                 name="Favorite"  
                 component={FavoriteRecipesScreen}  

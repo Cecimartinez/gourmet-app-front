@@ -3,6 +3,7 @@ import { View, Text, Pressable, Image, StyleSheet, FlatList, TouchableOpacity  }
 import MasonryList from '@react-native-seoul/masonry-list';
 // import { getRecipes } from '../../api/Recipe';
 import { Button } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function Recipes({ activeCategory, activeSearch }) {
@@ -234,15 +235,19 @@ export default function Recipes({ activeCategory, activeSearch }) {
     );
 }
 
+
 const RecipeCard = ({ item, index }) => {
-    let isEven = index %  2 ===  0;
+    const navigation = useNavigation();
+    let isEven = index % 2 === 0;
+
+    const handleRecipePress = () => {
+        // Navegar a la pantalla CreateReceta con el ID de la receta como parámetro
+        navigation.navigate('Create', { id: item._id });
+    };
 
     return (
         <View style={styles.recipeCard}>
-            <Pressable style={[styles.pressable, { paddingLeft: isEven ?  0 :  8, paddingRight: isEven ?  8 :  0 }]}>
-                {/* TODO: refactorizar imagen item.img
-                <Image source={require("../../assets/images/recipes/tarta-manzana.png")} style={styles.image} />
-                <Text style={styles.recipeName}>{item.title}</Text> */}
+            <Pressable onPress={handleRecipePress} style={[styles.pressable, { paddingLeft: isEven ? 0 : 8, paddingRight: isEven ? 8 : 0 }]}>
                 <Image source={{ uri: item.photo[0] }} style={styles.image} />
                 <Text style={styles.recipeName}>{item.title}</Text>
             </Pressable>

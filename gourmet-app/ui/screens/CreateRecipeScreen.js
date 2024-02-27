@@ -10,7 +10,7 @@ import ActionSheet from 'react-native-actionsheet';
 
 
 
-const CreateRecipeScreen = ({route}) => {
+const CreateRecipeScreen = ({route : route}) => {
     
     const [calories, setCalories] = useState('');
     const [carbohidratos, setCarbohidratos] = useState('');
@@ -26,6 +26,7 @@ const CreateRecipeScreen = ({route}) => {
     const [nutritionalInfo, setNutritionalInfo] = useState([ ]);
     const [pasos, setPasos] = useState([]);
     const [cantidadPasos, setCantidadPasos] = useState(0);
+    const [requiredTime, setRequiredTime] = useState(0);
    
     const categoriesArray = [ {id: 1, name: 'Vegetariana'}, {id: 2, name: 'Gluten Free'}, {id: 3, name: 'Cena'}, {id: 4, name: 'Postre'},{id: 5, name: 'Mediteranea'}, {id: 6, name: 'Vegana'}, {id: 7, name: 'Sin TACC'}, {id: 8, name: 'Celiaca'}]
 
@@ -43,14 +44,28 @@ const CreateRecipeScreen = ({route}) => {
 
     // Verificar si se ha pasado un ID como parámetro
     useEffect(() => {
+        // console.log(" ANTES route.params:",route.params)
+        // console.log("DESPUES route.params.id:",route.params.id)
         if (route.params && route.params.id) {
             // Si se pasa un ID, establecer el estado correspondiente y almacenar el ID de la receta
             setIsEditing(true);
             setRecipeId(route.params.id);
-        }else 
+            console.log("toma como que esta editando")
+            console.log("en primer use effect recipeId:",recipeId)
+            fetchRecipeDetails(route.params.id);
+            route.params.id = null;
+        }else {
         setImagesArray([])
+        setIsEditing(false);
         setError(null); //  Esto no se si esta bien ojo 
+        console.log("toma como que no esta editando")
+        }
+      
     }, [route.params]);
+
+
+
+    
 
         const [recipeDetails, setRecipeDetails] = useState({
             name: '',
@@ -65,32 +80,26 @@ const CreateRecipeScreen = ({route}) => {
 
         });
     
-        useEffect(() => {
-            if (route.params && route.params.id) {
-                fetchRecipeDetails(route.params.id);
-            }
-        }, [route.params]);
+        // useEffect(() => {
+        //     if (recipeId!==null ) {
+        //         fetchRecipeDetails(recipeId);
+        //     }
+        //     //console.log("USE EFFECT FETCH RECIPES route.params.id:",route.params.id)
+        //     console.log(" USE EFFECT FETCH RECIPES  route.params:",route.params)
+        //     console.log(" USE EFFECT FETCH RECIPES  recipeId:",recipeId)
+            
+        // }, [route.params]);
+        
 
-    const fetchRecipeDetails = async (recipeId) => {
+    const fetchRecipeDetails = async (recipeIdd) => {
         try {
-            const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/${recipeId}`);
+            console.log("entra a fetch recipe details")
+            console.log("en primer use effect recipeId:",recipeIdd)
+
+            const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/${recipeIdd}`);
             if (response.ok) {
                 const recipeData = await response.json();
-                console.log("recipeData:",recipeData)
-                // setRecipeDetails({
-                //     name: recipeData.name,
-                //     description: recipeData.description,
-                //     calories: recipeData.calories,
-                //     carbohidratos: recipeData.carbohidratos,
-                //     proteinas: recipeData.proteinas,
-                //     grasas: recipeData.grasas,
-                //     sodio: recipeData.sodio,
-                //     ingredients: recipeData.ingredients,
-                //     steps: recipeData.steps,
-                //     imagesArray: recipeData.photo,
-
-                //     // Actualiza más campos según los detalles de la receta recibidos
-                // });
+               
                 setIngredients(recipeData.ingredients); //ok
                 setDescription(recipeData.description);//ok
                 //setPasos(recipeData.steps);
@@ -101,7 +110,9 @@ const CreateRecipeScreen = ({route}) => {
                 // setPasos(recipeData.instructions);//ok
                 //setCalories(parseFloat(recipeData.calorie));
                 setCalories(recipeData.calorie)
-                console.log("------------calories:",recipeData.calorie)
+                if (recipeData.requiredTime) {
+                    setRequiredTime(recipeData.requiredTime);                
+                }
                 setGrasas(parseFloat(recipeData.fat));
                 setProteinas(parseFloat(recipeData.protein));
                 setSodio(parseFloat(recipeData.sodium));
@@ -126,11 +137,7 @@ const CreateRecipeScreen = ({route}) => {
                 // Puedes establecerlo en el estado ingredients
                 setIngredients(transformedIngredients);
 
-                console.log("ingedientes:",recipeData.ingredients)
-                console.log("pasos:",recipeData.steps)
-                console.log("imagesArray:",recipeData.photo)
-                console.log("categories:",recipeData.category)
-                console.log("calories:",recipeData.calories)
+               
 
             } else {
                 console.error('Error al obtener los detalles de la receta:', response.status);
@@ -200,7 +207,6 @@ const CreateRecipeScreen = ({route}) => {
     
     
     const handleStepModalClose = ({ step, detail, updatedStep }) => {
-        console.log("entra a handleStepModalClose los pasos son:",pasos)
         if (updatedStep) {
             // Si el paso se actualizó, actualiza el estado del paso existente
             const updatedSteps = pasos.map(item =>
@@ -217,13 +223,11 @@ const CreateRecipeScreen = ({route}) => {
                 setPasos(updatedSteps);
             } else {
                 // Si es un nuevo paso, crea un nuevo objeto con un id único
-                console.log("entra a nuevo paso, el largo es:",pasos.length)
-                console.log("pasos:",pasos)
+                
                 const newStep = { name: pasos.length+1, description: detail };
                 setPasos([...pasos, newStep]);
                 setCantidadPasos(pasos.length + 1)
-                console.log("entra a nuevo paso, el largo es:",pasos.length)
-                console.log("entra a nuevo paso, cantidad pasos es:",cantidadPasos)
+                
             }
         } else {
             // Si el detalle está vacío, elimina el paso del estado
@@ -288,7 +292,7 @@ const CreateRecipeScreen = ({route}) => {
              };
              const stringified = JSON.stringify(recipeData)
             const json = JSON.parse(stringified)
-            console.log("json:",json)
+           
             // const recipeData = {
             //     title: "Ensalada César dos",
             //     description: "Una deliciosa ensalada clásica con aderezo César.",
@@ -332,13 +336,10 @@ const CreateRecipeScreen = ({route}) => {
                 },
                 body: JSON.stringify(recipeData)
             });
-                console.log("----------body:",JSON.stringify(recipeData))
             // Verificar si la solicitud fue exitosa
             if (response.ok) {
                 // Si la respuesta es exitosa, puedes manejar el resultado aquí
-                console.log('Receta creada exitosamente');
                 setRecipeCreated(true);
-                console.log(response)
             } else {
                 // Si la respuesta no fue exitosa, maneja el error
                 console.error('Error al crear la receta:', response.status);
@@ -352,6 +353,31 @@ const CreateRecipeScreen = ({route}) => {
         }
     };
 
+
+    const handleDeleatRecipe = async () => {
+        try {
+            setLoading(true); // Comenzar la carga
+            // Realizar la solicitud DELETE al servidor
+            //const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/${recipeId}`, {
+            const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/${recipeId}`, {
+                method: 'DELETE'
+            });
+            // Verificar si la solicitud fue exitosa
+            if (response.ok) {
+                // Si la respuesta es exitosa, puedes manejar el resultado aquí
+                setRecipeCreated(true);
+            } else {
+                // Si la respuesta no fue exitosa, maneja el error
+                console.error('Error al eliminar la receta:', response.status);
+                setError('Error al eliminar la receta: ' + response.status);
+            }
+        } catch (error) {
+            console.error('Error al eliminar la receta:', error);
+            setError('Error al eliminar la receta: ' + error.message);
+        } finally {
+            setLoading(false); // Finalizar la carga, independientemente del resultado
+        }
+    };
 
 
     const handleCreateRecipeWithPhoto = async () => {
@@ -367,9 +393,15 @@ const CreateRecipeScreen = ({route}) => {
             formData.append('requiredTime', "20"); 
             formData.append('portion', "2"); 
             formData.append('hashtag', "Ensalada"); 
-            formData.append('calorie', "2");
-            formData.append('fat', "2");
-            formData.append('protein', "3");
+            //formData.append('calorie', "2");
+            formData.append('calorie', calories.toString());
+            //console.log("requiredTime:",requiredTime.toString())
+            //formData.append('requiredTime', requiredTime.toString());
+
+            //formData.append('fat', "2");
+            formData.append('fat', grasas.toString());
+            //formData.append('protein', "3");
+            formData.append('protein', proteinas.toString());
              formData.append('category', JSON.stringify(categories)); 
             formData.append('rating', "4.9"); 
             formData.append('sodium', "3"); 
@@ -379,10 +411,16 @@ const CreateRecipeScreen = ({route}) => {
 
               // Agrega los ingredientes al FormData
               let newIngredients = [];
-                ingredients.forEach((ingredient, index) => {
-                    newIngredients.push({ name: ingredient.name, quantity: ingredient.cantidad.toString() });
-                });
+                // ingredients.forEach((ingredient, index) => {
+                //     newIngredients.push({ name: ingredient.name, quantity: ingredient.cantidad.toString() });
+                // });
 
+                ingredients.forEach((ingredient, index) => {
+                    let cantidad = ingredient.cantidad != null ? ingredient.cantidad.toString() : ''; // Si es null o undefined, asigna una cadena vacía
+                    console.log("ingediente cantidad:",cantidad)
+                    newIngredients.push({ name: ingredient.name, quantity: cantidad });
+                });
+                
                 let newSteps = [];
                 pasos.forEach((step, index) => {
                     newSteps.push( step.description );
@@ -406,9 +444,12 @@ const CreateRecipeScreen = ({route}) => {
                     });
                 }
             });
-            if(isEditing){
+            let response;
+            if(isEditing==false){
+                    console.log("-------MANDA Post")
+
                     // Realizar la solicitud POST al servidor
-                    const response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto', {
+                     response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto', {
                         method: 'POST',
                         body: formData,
                         headers: {
@@ -421,7 +462,8 @@ const CreateRecipeScreen = ({route}) => {
                 if( route.params && route.params.id){
                     setRecipeId(route.params.id)
                 }
-                const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto/${recipeId}`,
+                console.log("-------MANDA PATCH")   //automatizar este id
+                response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto/${recipeId}`,
                 {
                     method: 'PATCH',
                     body: formData,
@@ -430,17 +472,13 @@ const CreateRecipeScreen = ({route}) => {
                         "Content-Type": "multipart/form-data",
                     },
                 });
+               
             }
 
-            console.log("method",response.method)
-            console.log("body",response.body)
-            console.log("------REEPSONSE:",response)
-            console.log("FormData:",formData)
     
             // Verificar si la solicitud fue exitosa
             if (response.ok) {
                 // Si la respuesta es exitosa, puedes manejar el resultado aquí
-                console.log('Receta creada exitosamente');
                 setRecipeCreated(true);
             } else {
                 // Si la respuesta no fue exitosa, maneja el error
@@ -483,35 +521,28 @@ const CreateRecipeScreen = ({route}) => {
     const [cameraPermission, setCameraPermission] = useState(false);
 
      const getCameraPermission = async () => {
-          console.log("pide permiso")
         //   const { status } = await Permissions.requestAsync(Permissions.CAMERA);
         requestPermission();
           if (status !== 'granted') {
               alert('Se requieren permisos de cámara para tomar fotos.');
          }
-         console.log("status:",status)
          setCameraPermission(status === 'granted');
-         console.log("cameraPermission:",cameraPermission)
      };
 
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [image, setImage] = useState("");
 
     const takeImage = async () => {
-        console.log("entra a take image")
         getCameraPermission();
-        console.log(status)
         let result = await ImagePicker.launchCameraAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           quality: 1,
           allowsMultipleSelection: false
         });
     
-        console.log("saca FOTO")
-        console.log(result);
+        
         
         setImagesArray([...imagesArray, result.assets[0].uri]);
-        console.log("imagesArray en take image",imagesArray)
 
     
         if (!result.cancelled) {
@@ -530,8 +561,7 @@ const CreateRecipeScreen = ({route}) => {
         selectionLimit: 10,
   
       });
-      console.log("saca FOTO")
-      console.log(result);
+      
       setImagesArray([...imagesArray, result.assets[0].uri]);
 
   
@@ -555,8 +585,34 @@ const CreateRecipeScreen = ({route}) => {
         setImagesArray(newArray);
     };
 
-    
+    const handleCancelar = () => {
+        setImagesArray([])
+        setIsEditing(false);
+        setError(null); //  Esto no se si esta bien ojo 
+        setCalories('');
+        setCarbohidratos('');
+        setProteinas('');
+        setGrasas('');
+        setSodio('');
+        setRequiredTime('');
+        setName('');
+        setDescription('');
+        setVideoURL('');
+        setCategories([]);
+        setImagesArray([]);
+        setIngredients([]);
+        setNutritionalInfo([ ]);
+        setPasos([]);
+        setCantidadPasos(0);
+        setRecipeId(null);
+    }
 
+    const handleImprimirEstados = () => {
+        console.log(" handleImprimirEstados is Editing:",isEditing)
+        console.log(" handleImprimirEstados recipeId:",recipeId)
+    }
+
+    
     return(
         <View style={styles.container}>
         
@@ -627,6 +683,17 @@ const CreateRecipeScreen = ({route}) => {
                 </ScrollView>
                 </View>
             </View>
+                 <View style={styles.formItem}>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>tiempo requerido</Text>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Input value={requiredTime.toString()} onChangeText={(text) => setRequiredTime(text)} keyboardType="numeric" />
+                        </View>
+                        <View style={styles.legendContainer}>
+                            <Text style={styles.legend}>min</Text>
+                        </View>
+                    </View>
             <View style={styles.nutritionalInfo}>
                 <Text style={styles.title}>Informacion nutricional</Text>
                 <View style={styles.nutritionalInfoContainer}>
@@ -641,17 +708,7 @@ const CreateRecipeScreen = ({route}) => {
                             <Text style={styles.legend}>Kcal</Text>
                         </View>
                     </View>
-                    <View style={styles.formItem}>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>Carbohidratos</Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Input value={carbohidratos.toString()} onChangeText={(text) => setCarbohidratos(text)} keyboardType="numeric" />
-                        </View>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>g</Text>
-                        </View>
-                    </View>
+                    
                     <View style={styles.formItem}>
                         <View style={styles.legendContainer}>
                             <Text style={styles.legend}>Grasas</Text>
@@ -694,6 +751,14 @@ const CreateRecipeScreen = ({route}) => {
             {/* <Button onPress={handleCreateRecipe}>Create Recipe</Button> */}
 
             <Button onPress={handleCreateRecipeWithPhoto}> Guardar </Button>
+            {isEditing && (
+                <Button onPress={handleDeleatRecipe}>Eliminar Receta</Button>
+            )}
+            
+            <Button onPress={handleCancelar}> Cancelar </Button>
+            <Button onPress={handleImprimirEstados}> Imprimir Estados </Button>
+
+
                
                 <View>
                     {loading ? (
@@ -701,8 +766,11 @@ const CreateRecipeScreen = ({route}) => {
                     ) : null}
                     {recipeCreated ? (
                         <View style={styles.successContainer}>
-                            <Text style={styles.successText}>Receta creada exitosamente</Text>
-                            <Button title="OK" onPress={() => setRecipeCreated(false)} />
+                            <Text style={styles.successText}>Accion exitosa</Text>
+                            <Button title="OK" onPress={() => {
+                                setRecipeCreated(false);
+                                handleCancelar();
+                            }} />
                         </View>
                     ) : null}
                     {error ? (
