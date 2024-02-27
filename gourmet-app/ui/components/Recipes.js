@@ -259,14 +259,16 @@ const RecipeCard = ({ item, index }) => {
     const navigation = useNavigation();
     let isEven = index % 2 === 0;
 
-    const handleRecipePress = () => {
+    const handleRecipePress = (recipe) => {
         // Navegar a la pantalla CreateReceta con el ID de la receta como parámetro
-       navigation.navigate('RecipeDetail',{id: item._id})
+        navigation.navigate('RecipeDetail', {recipe})
+        
+        console.log(item ,'Este es item')
     };
 
     return (
         <View style={styles.recipeCard}>
-            <Pressable onPress={handleRecipePress} style={[styles.pressable, { paddingLeft: isEven ? 0 : 8, paddingRight: isEven ? 8 : 0 }]}>
+            <Pressable onPress={()=>handleRecipePress(item)} style={[styles.pressable, { paddingLeft: isEven ? 0 : 8, paddingRight: isEven ? 8 : 0 }]}>
                 <Image source={{ uri: item.photo[0] }} style={styles.image} />
                 <Text style={styles.recipeName}>{item.title}</Text>
             </Pressable>

@@ -390,13 +390,13 @@ const CreateRecipeScreen = ({route : route}) => {
             formData.append('title', name);
             formData.append('description', description);
             formData.append('user', "64a60d14592f32e512ada278"); //  MUY IMPORTANTE 
-            formData.append('requiredTime', "20"); 
+//           formData.append('requiredTime', "20"); 
             formData.append('portion', "2"); 
             formData.append('hashtag', "Ensalada"); 
             //formData.append('calorie', "2");
             formData.append('calorie', calories.toString());
             //console.log("requiredTime:",requiredTime.toString())
-            //formData.append('requiredTime', requiredTime.toString());
+            formData.append('requiredTime', requiredTime.toString());
 
             //formData.append('fat', "2");
             formData.append('fat', grasas.toString());
@@ -436,6 +436,7 @@ const CreateRecipeScreen = ({route : route}) => {
     
             // Agrega las imágenes al FormData
             imagesArray.forEach((photo, index) => {
+                
                 if (photo !== null) {
                     formData.append(`photo`, {
                         uri: photo,
@@ -445,6 +446,9 @@ const CreateRecipeScreen = ({route : route}) => {
                 }
             });
             let response;
+            
+            console.log(formData)
+
             if(isEditing==false){
                     console.log("-------MANDA Post")
 

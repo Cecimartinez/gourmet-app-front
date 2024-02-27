@@ -122,7 +122,7 @@ export default function TabNavigation() {
               
                 
               
-                <Tab.Screen  
+                {/* <Tab.Screen  
                 name="Favorite"  
                 component={FavoriteRecipesScreen}  
                 options={{
@@ -134,7 +134,7 @@ export default function TabNavigation() {
                         );
                     }
                 }}
-                /> 
+                />  */}
           
 
 

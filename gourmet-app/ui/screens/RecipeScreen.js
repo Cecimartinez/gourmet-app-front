@@ -31,6 +31,8 @@ export default function RecipeScreen({ route, navigation, navigator }) {
 
 
     const { recipe } = route.params;
+   
+    
 
 
     const [selectedCategory, setSelectedCategory] = useState(1);

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 
 export default function MyRecipeScreen() {
@@ -12,6 +13,13 @@ export default function MyRecipeScreen() {
   const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
 
   const [bookmark,setBookmark] = useState(null);
+
+  const handleEditClick = (recipe) =>{
+      // Navegar a la pantalla CreateReceta con el ID de la receta como parámetro
+      navigation.navigate('Create', { id: recipe });
+    };
+    
+  
   
   const handleNavigateToRecipe = (recipe) => {
     navigation.navigate('RecipeDetail', { recipe });
@@ -20,6 +28,7 @@ export default function MyRecipeScreen() {
    
   // Función para manejar el evento de clic en el botón de favoritos para sacar y poner del mismo endpoint de favoritos
   const handleBookmarkClick = (id) => {
+
     fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278/${id}`, {
       method: 'POST'
     }).then((response) => response.json())
@@ -76,11 +85,11 @@ export default function MyRecipeScreen() {
                     <MaterialIcons name="star-rate" size={24} color="gold" style={styles.recipeStarsIcon}/>
                     <Text style={styles.recipeStars}>{item.rating}</Text>
                     <TouchableOpacity
-                       onPress={() => handleBookmarkClick(item._id)}
+                       onPress={() => handleEditClick(item._id)}
                      activeOpacity={0.6} // Define la opacidad al hacer clic
-        style={styles.bookmark}
-      >
-        <FontAwesome name="bookmark" size={24} color="black" />
+                    style={styles.bookmark}
+               >
+        <AntDesign name="edit" size={24} color="black" />
       </TouchableOpacity>
                     
                       
@@ -92,6 +101,8 @@ export default function MyRecipeScreen() {
           </View>
         )}
         />
+
+        
         
       </View>
     )
