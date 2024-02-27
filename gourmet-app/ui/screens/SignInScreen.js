@@ -53,8 +53,22 @@ export default function SignInScreen() {
              const tokens = await GoogleSignin.getTokens();
               console.log("ID Token: ", tokens.idToken);
              console.log("Access Token: ", tokens.accessToken);
+             const dataLogIn = {
+                sessionToken: tokens.accessToken,
+                idToken: tokens.idToken,
+                
+            }
             
-    
+
+            // Realizar la solicitud POST al servidor
+            const response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataLogIn )
+            });
+            console.log(response);
             // Navegar a TabNavigation después de iniciar sesión
             navigation.navigate('MainTabNavigation');
         } catch (e) {

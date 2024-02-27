@@ -62,7 +62,7 @@ export default function FavoriteRecipesScreen({ route }) {
     fetch('https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278')
       .then((response) => response.json())
       .then((data) => {
-        console.log('Mandando SPAM')
+       
         // Actualiza el estado con las recetas obtenidas
         setRecipes(data);
       })

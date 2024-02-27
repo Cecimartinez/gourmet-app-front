@@ -11,6 +11,7 @@ import Ingredients from '../components/ViewRecipeContent/Ingredients';
 import Steps from '../components/ViewRecipeContent/Steps';
 import Video from '../components/ViewRecipeContent/Video';
 import InformacionNutricional from '../components/ViewRecipeContent/InformacionNutricional';
+import Lightbox from 'react-native-lightbox';
 
 
 
@@ -18,7 +19,7 @@ import InformacionNutricional from '../components/ViewRecipeContent/InformacionN
 
 
 
-export default function RecipeScreen({ route, navigation }) {
+export default function RecipeScreen({ route, navigation, navigator }) {
 
 
     const categoriesArray = [
@@ -63,7 +64,12 @@ export default function RecipeScreen({ route, navigation }) {
     return (
 
         <View style={styles.container}>
-            <Image source={{ uri: recipe.photo[0] }} style={styles.recipeImage} />
+
+                    
+                           <Image source={{ uri: recipe.photo[0] }} style={styles.recipeImage} />
+                
+
+
             <View>
                 <Text style={styles.title}>{recipe.title}</Text>
                 <View style={styles.barraSuperior}>
@@ -73,6 +79,15 @@ export default function RecipeScreen({ route, navigation }) {
                     <Text style={styles.recipeStars}>{recipe.rating}</Text>
                     <FontAwesome5 name="fire-alt" size={24} color="gold" style={styles.recipeStarsIcon} />
                     <Text style={styles.recipeStars}>{recipe.calorie}</Text>
+                    <TouchableOpacity
+                    onPress={() => handleBookmarkClick(recipe._id)}
+                    activeOpacity={0.6} // Define la opacidad al hacer clic
+                    style={styles.bookmark}
+                  >
+                    <FontAwesome name="bookmark" size={24} color="orange" />
+                  </TouchableOpacity>
+
+
 
                 </View>
                 <View style={styles.barraMedio}>
@@ -136,6 +151,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
         borderRadius: 32,
+        resizeMode: 'cover',
+
 
 
     },
@@ -217,6 +234,12 @@ const styles = StyleSheet.create({
 
 
     },
+    bookmark: {
+        marginTop: 7,
+        alignSelf: 'flex-start',
+        marginBottom: 30,
+    
+      },
     ingredientsContainer: {
         display: 'flex',
         justifyContent: 'space-between',

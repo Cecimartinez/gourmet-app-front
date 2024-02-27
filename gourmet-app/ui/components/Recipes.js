@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image, StyleSheet, FlatList, TouchableOpacity  } from 'react-native';
+import { View, Text, Pressable, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import MasonryList from '@react-native-seoul/masonry-list';
 // import { getRecipes } from '../../api/Recipe';
 import { Button } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 export default function Recipes({ activeCategory, activeSearch }) {
@@ -12,6 +14,9 @@ export default function Recipes({ activeCategory, activeSearch }) {
     const [limit, setLimit] = useState(10);
     const [error, setError] = useState(null);
     
+  const navigation = useNavigation(); // Obtiene la función de navegación
+
+
 
     useEffect(() => {
         const fetchFilteredRecipes = async () => {
@@ -31,7 +36,7 @@ export default function Recipes({ activeCategory, activeSearch }) {
         } else {
             fetchAllRecipes();
         }
-    }, [activeCategory,activeSearch]);
+    }, [activeCategory, activeSearch]);
 
 
 
@@ -39,7 +44,7 @@ export default function Recipes({ activeCategory, activeSearch }) {
     // const getRecipes = async (category = null) => {
     //     try {
     //         let url = 'https://ad-backend-production.up.railway.app/api/recipes/search/by?';
-            
+
     //         if (category) {
     //             console.log("entra al category get recipe");
     //             url += `&category[]=${category}`;
@@ -48,7 +53,7 @@ export default function Recipes({ activeCategory, activeSearch }) {
     //             console.log("entra al all get recipe");
     //             url = 'https://ad-backend-production.up.railway.app/api/recipes/search/by?limit=100';
     //         }
-            
+
     //         const response = await fetch(url);
     //         const data = await response.json();
     //         return data;
@@ -56,12 +61,12 @@ export default function Recipes({ activeCategory, activeSearch }) {
     //         throw new Error('Error fetching recipes');
     //     }
     // };
-    
-//nuevo con category y search
+
+    //nuevo con category y search
     const getRecipes = async (category = null, searchTerm = null) => {
         try {
             let url = 'https://ad-backend-production.up.railway.app/api/recipes/search/by?';
-    
+
             // Construir la URL según los parámetros recibidos
             if (category && category !== 'All') {
                 url += `category[]=${category}&`;
@@ -69,12 +74,12 @@ export default function Recipes({ activeCategory, activeSearch }) {
             if (searchTerm) {
                 url += `title=${encodeURIComponent(searchTerm)}&`;
             }
-    
+
             // Si no hay categoría o es 'All', establecer el límite como 100
             if (!category || category === 'All') {
                 url += 'limit=100';
             }
-    
+
             const response = await fetch(url);
             const data = await response.json();
             return data;
@@ -82,11 +87,11 @@ export default function Recipes({ activeCategory, activeSearch }) {
             throw new Error('Error fetching recipes');
         }
     };
-    
 
 
 
-    
+
+
     useEffect(() => {
         async function fetchRecipes() {
             try {
@@ -113,11 +118,11 @@ export default function Recipes({ activeCategory, activeSearch }) {
         } catch (error) {
             console.error('Error fetching recipes:', error);
             setError(error.message); // Establecer el mensaje de error en el estado si hay un error
-        }        
+        }
     };
 
 
-        //este va catregory
+    //este va catregory
     // const handleRefresh = () => {
     //     setRefreshing(true);
     //     fetchRecipes().finally(() => setRefreshing(false));
@@ -147,7 +152,7 @@ export default function Recipes({ activeCategory, activeSearch }) {
         fetchRecipes(); // Llamar a la función para obtener recetas cuando se presione el botón
     }
 
-    
+
     const handleCloseError = () => {
         setError(null); // Limpiar el estado de error al cerrar el mensaje
     }
@@ -163,10 +168,10 @@ export default function Recipes({ activeCategory, activeSearch }) {
                 setError('Error fetching recipes');
             }
         };
-    
+
         fetchAllRecipes();
     }, []);
-    
+
 
     const fetchAllRecipes = async () => {
         try {
@@ -181,7 +186,7 @@ export default function Recipes({ activeCategory, activeSearch }) {
 
 
 
- 
+
     const handleRefresh = async () => {
         setRefreshing(true);
         try {
@@ -198,18 +203,21 @@ export default function Recipes({ activeCategory, activeSearch }) {
 
 
     return (
-          <View style={styles.container}>
-              <View style={styles.masonryList}>
-                  <MasonryList
-                      data={recipes}
-                      keyExtractor={(item) => item._id}
-                      numColumns={2}
-                      showsVerticalScrollIndicator={false}
-                      renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
-                      onEndReachedThreshold={0.1}
-                  />
-                 <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
-                 {error && (
+        <View style={styles.container}>
+            <View style={styles.masonryList}>
+                <MasonryList
+                    data={recipes}
+                    keyExtractor={(item) => item._id}
+                    numColumns={2}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
+                    onEndReachedThreshold={0.1}
+                />
+
+
+
+                <Button buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
+                {error && (
                     <View style={styles.errorContainer}>
                         <Text style={styles.errorText}>{error}</Text>
                         <TouchableOpacity style={styles.closeButton} onPress={handleCloseError}>
@@ -217,8 +225,8 @@ export default function Recipes({ activeCategory, activeSearch }) {
                         </TouchableOpacity>
                     </View>
                 )}
-             </View>
-          </View>
+            </View>
+        </View>
         // <View style={styles.container}>
         //     <FlatList
         //         data={recipes}
@@ -247,83 +255,100 @@ export default function Recipes({ activeCategory, activeSearch }) {
 }
 
 const RecipeCard = ({ item, index }) => {
-    let isEven = index %  2 ===  0;
+    const navigation = useNavigation();
+
+    let isEven = index % 2 === 0;
+
+    const handleRecipePress = () => {
+        // Navegar a la pantalla CreateReceta con el ID de la receta como parámetro
+       navigation.navigate('RecipeDetail',{id: item._id})
+    };
 
     return (
         <View style={styles.recipeCard}>
-            <Pressable style={[styles.pressable, { paddingLeft: isEven ?  0 :  8, paddingRight: isEven ?  8 :  0 }]}>
-                {/* TODO: refactorizar imagen item.img
-                <Image source={require("../../assets/images/recipes/tarta-manzana.png")} style={styles.image} />
-                <Text style={styles.recipeName}>{item.title}</Text> */}
+            <Pressable onPress={handleRecipePress} style={[styles.pressable, { paddingLeft: isEven ? 0 : 8, paddingRight: isEven ? 8 : 0 }]}>
                 <Image source={{ uri: item.photo[0] }} style={styles.image} />
                 <Text style={styles.recipeName}>{item.title}</Text>
             </Pressable>
         </View>
-    );
-};
+    );
+ };
 
-const RecipeCards = ({ item, index }) => {
-    let isEven = index %  2 ===  0;
+// const RecipeCards = ({ item, index }) => {
+//     let isEven = index % 2 === 0;
 
-    return (
-        <View style={styles.recipeCard}>
-            <Pressable style={[styles.pressable, { paddingLeft: isEven ?  0 :  8, paddingRight: isEven ?  8 :  0 }]}>
-                {/* Utilizamos la primera imagen del arreglo de fotos proporcionado */}
-                <Image source={{ uri: item.photo[0] }} style={styles.image} />
-                <Text style={styles.recipeName}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-                <Text style={styles.ingredients}>Ingredients:</Text>
-                <View style={styles.ingredientsList}>
-                    {item.ingredients.map(ingredient => (
-                        <Text key={ingredient._id} style={styles.ingredient}>{ingredient.name} - {ingredient.quantity}</Text>
-                    ))}
-                </View>
-                <Text style={styles.instructions}>Instructions:</Text>
-                <View style={styles.instructionsList}>
-                    {item.instructions.map((instruction, idx) => (
-                        <Text key={idx} style={styles.instruction}>{instruction}</Text>
-                    ))}
-                </View>
-                <Text style={styles.portion}>Portion: {item.portion}</Text>
-                <Text style={styles.hashtag}>#{item.hashtag}</Text>
-                <Text style={styles.calorie}>Calories: {item.calorie}</Text>
-                <Text style={styles.fat}>Fat: {item.fat}</Text>
-                <Text style={styles.protein}>Protein: {item.protein}</Text>
-                <Text style={styles.rating}>Rating: {item.rating}</Text>
-                <Text style={styles.likes}>Likes: {item.like}</Text>
-                <Text style={styles.video}>Video: {item.video}</Text>
-            </Pressable>
-        </View>
-    );
-};
+//     return (
+//         <View style={styles.recipeCard}>
+//             <Pressable style={[styles.pressable, { paddingLeft: isEven ? 0 : 8, paddingRight: isEven ? 8 : 0 }]}>
+//                 {/* Utilizamos la primera imagen del arreglo de fotos proporcionado */}
+//                 <Image source={{ uri: item.photo[0] }} style={styles.image} />
+//                 <Text style={styles.recipeName}>{item.title}</Text>
+//                 <Text style={styles.description}>{item.description}</Text>
+//                 <Text style={styles.ingredients}>Ingredients:</Text>
+//                 <View style={styles.ingredientsList}>
+//                     {item.ingredients.map(ingredient => (
+//                         <Text key={ingredient._id} style={styles.ingredient}>{ingredient.name} - {ingredient.quantity}</Text>
+//                     ))}
+//                 </View>
+//                 <Text style={styles.instructions}>Instructions:</Text>
+//                 <View style={styles.instructionsList}>
+//                     {item.instructions.map((instruction, idx) => (
+//                         <Text key={idx} style={styles.instruction}>{instruction}</Text>
+//                     ))}
+//                 </View>
+//                 <Text style={styles.portion}>Portion: {item.portion}</Text>
+//                 <Text style={styles.hashtag}>#{item.hashtag}</Text>
+//                 <Text style={styles.calorie}>Calories: {item.calorie}</Text>
+//                 <Text style={styles.fat}>Fat: {item.fat}</Text>
+//                 <Text style={styles.protein}>Protein: {item.protein}</Text>
+//                 <Text style={styles.rating}>Rating: {item.rating}</Text>
+//                 <Text style={styles.likes}>Likes: {item.like}</Text>
+//                 <Text style={styles.video}>Video: {item.video}</Text>
+//             </Pressable>
+//         </View>
+//     );
+// };
 
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal:  3,
-        marginTop:  8,
+        marginHorizontal: 3,
+        marginTop: 8,
     },
 
     masonryList: {
-        flex:  1,
+        flex: 1,
     },
     recipeCard: {
-        flex:  1,
+        flex: 1,
+    },
+    recipeItem: {
+
+        flexDirection: 'row',
+        fontSize: 22,
+        flex: 1,
+        backgroundColor: '#fefefe',
+        padding: 5,
+        marginVertical: 15,
+        borderRadius: 24,
+        marginRight: 5,
+
+        width: '50%',
     },
     pressable: {
         width: '100%',
         justifyContent: 'center',
-        marginBottom:  16,
+        marginBottom: 16,
     },
     image: {
-        width:  160,
-        height:  160,
-        borderRadius:  25,
+        width: 160,
+        height: 160,
+        borderRadius: 25,
         backgroundColor: 'rgba(0,  0,  0,  0.2)',
     },
     recipeName: {
-        fontSize:  13,
-        marginTop:  10,
+        fontSize: 13,
+        marginTop: 10,
         fontWeight: 'bold',
     },
     errorText: {
