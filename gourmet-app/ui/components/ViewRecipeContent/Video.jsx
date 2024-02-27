@@ -12,7 +12,7 @@ function Video({ video }) {
             <WebView
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-                source={{ uri: 'https://youtu.be/0aDB39jyLG0' }}
+                source={{ uri: video }}
             />
         </View>);
 }
