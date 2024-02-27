@@ -3,19 +3,20 @@ import React, { useEffect, useState } from "react";
 import { Modal, View, StyleSheet, Text } from "react-native";
 const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
     const [ingredient, setIngredient] = useState('');
-    const [cantidad, setcantidad] = useState('');
+    const [cantidad, setCantidad] = useState('');
     const [updatedIngredient, setUpdatedIngredient] = useState(false);
     const [buttonText, setButtonText] = useState('Agregar');
 
     useEffect(() => {
+        console.log("selected ingredient", selectedIngredient);
         if (selectedIngredient) {
             setIngredient(selectedIngredient.name);
-            setcantidad(selectedIngredient.cantidad);
+            setCantidad(selectedIngredient.cantidad);
             setUpdatedIngredient(true);
             setButtonText('Editar');
         } else {
             setIngredient('');
-            setcantidad('');
+            setCantidad('');
             setButtonText('Agregar');
             setUpdatedIngredient(false);
         }
@@ -29,7 +30,7 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
         }
     };
     const handleSubmitEliminar = () => {
-        setcantidad('');
+        setCantidad('');
         setUpdatedIngredient('');
         onClose({ ingredient, cantidad: '', updatedIngredient });
     }
@@ -46,7 +47,7 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
                             <Input value={ingredient} placeholder="Ingrediente" onChangeText={setIngredient} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Input value={cantidad} placeholder="Cantidad" onChangeText={setcantidad} keyboardType="numeric"  />
+                            <Input value={cantidad} placeholder="Cantidad" onChangeText={setCantidad} keyboardType="numeric"  />
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -56,7 +57,7 @@ const AddIngredientModal = ({ visible, onClose, selectedIngredient }) => {
                             color="#FFA200"
                             radius="lg"
                             onPress={handleSubmit}
-                            disabled={ingredient.trim() === '' || cantidad  == 0}
+                            disabled={ingredient === '' || cantidad  == 0}
                         />
                       {updatedIngredient && (   //para que solo se vea cuando es para editar un ingrediente
                             <Button

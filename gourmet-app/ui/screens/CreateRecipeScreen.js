@@ -25,6 +25,7 @@ const CreateRecipeScreen = ({route}) => {
     const [ingredients, setIngredients] = useState([]);
     const [nutritionalInfo, setNutritionalInfo] = useState([ ]);
     const [pasos, setPasos] = useState([]);
+    const [cantidadPasos, setCantidadPasos] = useState(0);
    
     const categoriesArray = [ {id: 1, name: 'Vegetariana'}, {id: 2, name: 'Gluten Free'}, {id: 3, name: 'Cena'}, {id: 4, name: 'Postre'},{id: 5, name: 'Mediteranea'}, {id: 6, name: 'Vegana'}, {id: 7, name: 'Sin TACC'}, {id: 8, name: 'Celiaca'}]
 
@@ -199,6 +200,7 @@ const CreateRecipeScreen = ({route}) => {
     
     
     const handleStepModalClose = ({ step, detail, updatedStep }) => {
+        console.log("entra a handleStepModalClose los pasos son:",pasos)
         if (updatedStep) {
             // Si el paso se actualizó, actualiza el estado del paso existente
             const updatedSteps = pasos.map(item =>
@@ -215,8 +217,13 @@ const CreateRecipeScreen = ({route}) => {
                 setPasos(updatedSteps);
             } else {
                 // Si es un nuevo paso, crea un nuevo objeto con un id único
-                const newStep = { id: pasos.length + 1, name: step, description: detail };
+                console.log("entra a nuevo paso, el largo es:",pasos.length)
+                console.log("pasos:",pasos)
+                const newStep = { name: pasos.length+1, description: detail };
                 setPasos([...pasos, newStep]);
+                setCantidadPasos(pasos.length + 1)
+                console.log("entra a nuevo paso, el largo es:",pasos.length)
+                console.log("entra a nuevo paso, cantidad pasos es:",cantidadPasos)
             }
         } else {
             // Si el detalle está vacío, elimina el paso del estado
@@ -399,16 +406,32 @@ const CreateRecipeScreen = ({route}) => {
                     });
                 }
             });
-    
-            // Realizar la solicitud POST al servidor
-            const response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "multipart/form-data",
-                  },
-            });
+            if(isEditing){
+                    // Realizar la solicitud POST al servidor
+                    const response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "multipart/form-data",
+                        },
+                    });
+            }else{              
+                // Realizar la solicitud POST al servidor
+                if( route.params && route.params.id){
+                    setRecipeId(route.params.id)
+                }
+                const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto/${recipeId}`,
+                {
+                    method: 'PATCH',
+                    body: formData,
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            }
+
             console.log("method",response.method)
             console.log("body",response.body)
             console.log("------REEPSONSE:",response)
@@ -525,8 +548,12 @@ const CreateRecipeScreen = ({route}) => {
     if(isCameraOpen) return <CameraComponent hideToggleSetter={setIsCameraOpen} allowImageSet={false} _cb={setImage}/>
   
 
-
- 
+    //eliminar la imagen
+    const handleImagePress = (index) => {
+        // Crear una copia del array de imágenes sin la imagen en el índice dado
+        const newArray = imagesArray.filter((_, i) => i !== index);
+        setImagesArray(newArray);
+    };
 
     
 
@@ -545,27 +572,24 @@ const CreateRecipeScreen = ({route}) => {
             <View style={styles.container}>
             <View style={styles.containerScrollView}>
                 <ScrollView
-                style={{ flex: 1 }}
-                horizontal
-                contentContainerStyle={styles.imageContainer}
-                showsHorizontalScrollIndicator={false}
-                >
-                {/* {arrayPhotos.map((photo, index) => (
-                    <Image key={index} source={{ uri: photo }} style={styles.image} />
-                ))} */}
-                {imagesArray.map((photo, index) => (
-                        console.log("pgoto",photo),
-                        console.log("imagenesArray",imagesArray),
-                    <Image key={index} source={{ uri: photo }} style={styles.image}  />
-                ))}
-                <Button
-                    icon={<Icon name="add-circle-outline" size={30} />}
-                    color={'white'}
-                    style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}
-                    onPress={openActionSheet} // Llama a la función openActionSheet al presionar el botón
-                />
-                <Image source={{ uri: "null" }} style={styles.image} />
-                </ScrollView>
+                        style={{ flex: 1 }}
+                        horizontal
+                        contentContainerStyle={styles.imageContainer}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {imagesArray.map((photo, index) => (
+                            <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
+                                <Image source={{ uri: photo }} style={styles.image} />
+                            </TouchableOpacity>
+                        ))}
+                        <Button
+                            icon={<Icon name="add-circle-outline" size={30} />}
+                            color={'white'}
+                            style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}
+                            onPress={openActionSheet} // Llama a la función openActionSheet al presionar el botón
+                        />
+                        <Image source={{ uri: "null" }} style={styles.image} />
+                    </ScrollView>
             </View>
 
             {/* ActionSheet */}
@@ -667,9 +691,9 @@ const CreateRecipeScreen = ({route}) => {
 
             <StepsComponent stepsArray={pasos}   handleModalClose={handleStepModalClose}     />
 
-            <Button onPress={handleCreateRecipe}>Create Recipe</Button>
+            {/* <Button onPress={handleCreateRecipe}>Create Recipe</Button> */}
 
-            <Button onPress={handleCreateRecipeWithPhoto}>Create Recipe W Photo </Button>
+            <Button onPress={handleCreateRecipeWithPhoto}> Guardar </Button>
                
                 <View>
                     {loading ? (
@@ -693,9 +717,10 @@ const CreateRecipeScreen = ({route}) => {
 
 
 
-                <Text>{isEditing ? 'Editar Receta' : 'Crear Receta'}</Text>
-                {/* Aquí puedes colocar los campos y controles para crear o editar la receta */}
-                <Button title={isEditing ? 'Editar Receta' : 'Crear Receta'} onPress={handleCreateOrEditRecipe} />
+                {/* <Text>{isEditing ? 'Editar Receta' : 'Crear Receta'}</Text> */}
+                {/* Aquí puedes colocar los campos  <Button title={isEditing ? 'Editar Receta' : 'Crear Receta'} onPress={handleCreateOrEditRecipe} />
+                y controles para crear o editar la receta */}
+                
 
 
 

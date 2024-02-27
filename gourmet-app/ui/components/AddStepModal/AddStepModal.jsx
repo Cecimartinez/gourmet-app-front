@@ -2,12 +2,11 @@ import { Button,  Icon,  Input } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Modal, View, StyleSheet, Text } from "react-native";
 
-const AddStepModal = ({ visible, onClose, selectedStep }) => {
+const AddStepModal = ({ visible, onClose, selectedStep, nextStepNumber }) => {
     const [step, setStep] = useState('');
     const [detail, setDetail] = useState('');
     const [updatedStep, setUpdateStep] = useState(false);
     const [buttonText, setButtonText] = useState('Agregar');
-
 
     useEffect(() => {
         if (selectedStep) {
@@ -15,29 +14,27 @@ const AddStepModal = ({ visible, onClose, selectedStep }) => {
             setDetail(selectedStep.description);
             setUpdateStep(true);
             setButtonText('Editar');
-
         } else {
-            setStep('');
+            setStep('' + nextStepNumber); // Establecer el siguiente número de paso disponible automáticamente
             setDetail('');
             setButtonText('Agregar');
             setUpdateStep(false);
         }
-    }, [visible, selectedStep]);
+    }, [visible, selectedStep, nextStepNumber]);
 
     const handleSubmit = () => {
-        // esto ver que onda
         if (updatedStep) {
             onClose({ step, detail, updatedStep });
+        } else {
+            onClose({ step, detail });
         }
-        onClose({ step, detail });
     };
 
     const handleSubmitEliminar = () => {
         setDetail('');
         setUpdateStep('');
         onClose({ step, detail: '', selectedStep });
-    }
-
+    };
 
     return (
         <Modal visible={visible} onRequestClose={onClose} transparent>
@@ -63,7 +60,7 @@ const AddStepModal = ({ visible, onClose, selectedStep }) => {
                             onPress={handleSubmit}
                             disabled={ detail.trim() === ''}
                         />
-                        {selectedStep && (   //para que solo se vea cuando es para editar un ingrediente
+                        {selectedStep && (
                             <Button
                                 title="Eliminar"
                                 icon={<Icon name="add" color="#FFF" />}
@@ -78,7 +75,6 @@ const AddStepModal = ({ visible, onClose, selectedStep }) => {
         </Modal>
     );
 };
-
 const styles = StyleSheet.create({
     container:{
         flex: 1,
