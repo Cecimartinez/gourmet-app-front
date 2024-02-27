@@ -67,34 +67,22 @@ export default function TabNavigation() {
                     }}
                 />
 
-                {/* <Tab.Screen
-                    name="Create"
-                    component={CreateRecipeScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => {
-                            return (
-                                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <AntDesign name="pluscircleo" size={24} color={focused ? "#F39E0B" : "#111"} />
-                                </View>
-                            );
-                        }
-                    }}
-                /> */}
-
                 <Tab.Screen  
-                        name="Create"  
-                        component={CreateRecipeScreen}  
-                        initialParams={{ id: '65d3f9da38accc150cafd3d1' }} // Aquí defines el parámetro que deseas enviar
-                        options={{
-                            tabBarIcon: ({ focused }) => {
-                                return (
-                                    <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                        <AntDesign name="pluscircleo" size={24} color={focused ? "#F39E0B" : "#111"} />
-                                    </View>
-                                );
-                            }
-                        }} 
-                    /> 
+                name="Create"  
+                component={CreateRecipeScreen}  
+                initialParams={{ id: null }} // Aquí defines el parámetro que deseas enviar
+                options={{
+                    tabBarIcon: ({ focused }) => {
+                        return (
+                            <View style={{ alignItems: "center", justifyContent: "center" }}>
+                                <AntDesign name="pluscircleo" size={24} color={focused ? "#F39E0B" : "#111"} />
+                            </View>
+                        );
+                    }
+                }}   
+                /> 
+
+                
                 <Tab.Screen
                     name="Favorite"
                     component={FavoriteRecipesScreen}
@@ -131,21 +119,10 @@ export default function TabNavigation() {
                     }}
                 />
                 
-                {/* <Tab.Screen  
-                name="Create"  
-                component={CreateRecipeScreen}  
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                <AntDesign name="pluscircleo" size={24} color={focused ? "#F39E0B" : "#111"} />
-                            </View>
-                        );
-                    }
-                }}   
-                /> */}
+              
                 
-                {/* <Tab.Screen  
+              
+                <Tab.Screen  
                 name="Favorite"  
                 component={FavoriteRecipesScreen}  
                 options={{
@@ -157,20 +134,7 @@ export default function TabNavigation() {
                         );
                     }
                 }}
-                /> */}
-                {/* <Tab.Screen  
-                name="Profile"  
-                component={ProfileScreen}  
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                <Ionicons name="person-outline" size={24} color={focused ? "#F39E0B" : "#111"} />
-                            </View>
-                        );
-                    }
-                }}
-                /> */}
+                /> 
           
 
 

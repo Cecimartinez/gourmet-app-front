@@ -254,9 +254,9 @@ export default function Recipes({ activeCategory, activeSearch }) {
     );
 }
 
+
 const RecipeCard = ({ item, index }) => {
     const navigation = useNavigation();
-
     let isEven = index % 2 === 0;
 
     const handleRecipePress = () => {
