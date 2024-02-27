@@ -5,6 +5,6 @@
   "minify": false,
   "urlRandomness": null,
   "https": false,
-  "scheme": "exp+gourmet-app",
-  "devClient": false
+  "devClient": true,  //solo se cambio esto a tru con el utlimo merge con ceci
+  "scheme": "exp+gourmet-app"
 }

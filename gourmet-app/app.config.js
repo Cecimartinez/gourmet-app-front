@@ -21,17 +21,28 @@ export default{
 
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier":"com.godeli.gourmet",
-      "googleServicesFile": process.env.GOOGLE_SERVICES_INFOPLIST
+      "bundleIdentifier": "com.godeli.gourmet",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.715063980560-pctr6n6pkedvd32od686d2ged3tv2sq9"
+            ]
+          }
+        ]
+      }
     },
     "android": {
+      "package": "com.godeli.gourmet",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon-gourmet.png",
         "backgroundColor": "#ffffff"
-      }
-      ,
-      "package":"com.godeli.gourmet",
-      "googleServicesFile": process.env.GOOGLE_SERVICES_JSON
+      },
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     
     "web": {
@@ -43,16 +54,23 @@ export default{
       }
     },
     "plugins": [
-      ["expo-camera", {
-        "cameraPermission": "Allow app to access your camera."
-      }],
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow app to access your camera."
+        }
+      ],
       [
         "expo-image-picker",
         {
           "photosPermission": "Allow app to access your photos."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a00963db-55c3-41db-9796-d65c46388f2b"
+      }
+    }
   }
-  
-}
