@@ -2,8 +2,20 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ProfileScreen({ navigation }) {
+
+
+
+
+export default function ProfileScreen() {
+   
+
+   
+  const navigation = useNavigation(); // Obtiene la función de navegación
+    
+
     return (
         <View style={styles.container}>
             <StatusBar style='dark' />
@@ -18,10 +30,12 @@ export default function ProfileScreen({ navigation }) {
                         style={styles.profileImage}
                     />   
                     <Text style={styles.userName}>Ana Rodriguez</Text>
-                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingLeft:100, paddingRight:100, marginTop:50}} onPress={() => navigation.navigate('MisRecetas')}>
-                        <SimpleLineIcons name="notebook" style={{color:'#FFA200', fontSize:15, paddingRight:10, justifyContent:'flex-start'}}/>
-                            <Text style={{color:'#FFA200', fontWeight:'bold', fontSize:15}}>Mis Recetas</Text>
-                        </TouchableOpacity>
+                       
+                       
+                     
+                   
+                   
+                   
                     <TouchableOpacity style={[styles.button, { backgroundColor: '#FFA200', paddingLeft:100, paddingRight:100 , marginTop:150}]}>
                         <Text style={styles.buttonText}>Cerrar Sesión</Text>
                     </TouchableOpacity>

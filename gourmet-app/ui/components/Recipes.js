@@ -198,16 +198,16 @@ export default function Recipes({ activeCategory, activeSearch }) {
 
 
     return (
-         <View style={styles.container}>
-             <View style={styles.masonryList}>
-                 <MasonryList
-                     data={recipes}
-                     keyExtractor={(item) => item._id}
-                     numColumns={2}
-                     showsVerticalScrollIndicator={false}
-                     renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
-                     onEndReachedThreshold={0.1}
-                 />
+          <View style={styles.container}>
+              <View style={styles.masonryList}>
+                  <MasonryList
+                      data={recipes}
+                      keyExtractor={(item) => item._id}
+                      numColumns={2}
+                      showsVerticalScrollIndicator={false}
+                      renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
+                      onEndReachedThreshold={0.1}
+                  />
                  <Button    buttonStyle={{ backgroundColor: '#ff9900', marginBottom: 30 }} onPress={handleButtonPress}>Cargar más</Button>
                  {error && (
                     <View style={styles.errorContainer}>
@@ -218,7 +218,19 @@ export default function Recipes({ activeCategory, activeSearch }) {
                     </View>
                 )}
              </View>
-         </View>
+          </View>
+        // <View style={styles.container}>
+        //     <FlatList
+        //         data={recipes}
+        //         keyExtractor={(item) => item._id}
+        //         numColumns={2}
+        //         showsVerticalScrollIndicator={false}
+        //         renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
+        //         onEndReachedThreshold={0.1}
+        //         refreshing={refreshing}
+        //         onRefresh={handleRefresh}
+        //     />
+        // </View>
         // <View style={styles.container}>
         //     <FlatList
         //         data={recipes}
