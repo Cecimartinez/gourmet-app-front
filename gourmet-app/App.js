@@ -1,11 +1,11 @@
-import AppNavigation from './navigation';
-import TabNavigation from './navigation/TabNavigation';
-import SignInScreen from './ui/screens/SignInScreen';
+import React from 'react';
+import MainNavigationContainer from './navigation/MainNavigationContainer';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
-      // <AppNavigation />
-      // <TabNavigation/>
-      <SignInScreen/>
-  );
+    <NavigationContainer>
+      <MainNavigationContainer/>
+    </NavigationContainer>
+    );
 }

@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import FavoriteRecipesScreen from '../ui/screens/FavoriteRecipesScreen';
 import SearchRecipesScreen from '../ui/screens/SearchRecipesScreen';
@@ -26,7 +25,6 @@ const screenOptions = {
 
 export default function TabNavigation() {
     return (
-        <NavigationContainer>
             <Tab.Navigator screenOptions={screenOptions}>
                 <Tab.Screen  
                 name="Home"  
@@ -96,6 +94,5 @@ export default function TabNavigation() {
                 }}
                 />
             </Tab.Navigator>
-        </NavigationContainer>
     );
 }

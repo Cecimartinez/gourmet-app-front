@@ -2,8 +2,30 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen() {
+
+    const navigation = useNavigation();
+
+    const handleLogout = async () => {
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            // Optionally, navigate the user back to the sign-in screen or clear user info from state/local storage
+            navigation.reset({
+                index:  0,
+                routes: [{ name: 'SignIn' }],
+              });
+              
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    
+
     return (
         <View style={styles.container}>
             <StatusBar style='dark' />
@@ -11,20 +33,21 @@ export default function ProfileScreen({ navigation }) {
                 style={{ flex:  1 }}
                 showsVerticalScrollIndicator={false}
             >
-                <Text style={{color:"#FFA200", fontSize:18, fontWeight:"500", paddingLeft:10}} >Create Recipe</Text>
+                <Text style={{color:"#FFA200", fontSize:18, fontWeight:"500", paddingLeft:10}} >User Profile</Text>
                 <View style={{alignItems:'center', justifyContent:'center', width:'auto', marginTop:100}}>
                     <Image
                         source={require('../../assets/images/profile.jpg')}
                         style={styles.profileImage}
                     />   
                     <Text style={styles.userName}>Ana Rodriguez</Text>
-                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingLeft:100, paddingRight:100, marginTop:50}} onPress={() => navigation.navigate('MisRecetas')}>
-                        <SimpleLineIcons name="notebook" style={{color:'#FFA200', fontSize:15, paddingRight:10, justifyContent:'flex-start'}}/>
-                            <Text style={{color:'#FFA200', fontWeight:'bold', fontSize:15}}>Mis Recetas</Text>
-                        </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: '#FFA200', paddingLeft:100, paddingRight:100 , marginTop:150}]}>
-                        <Text style={styles.buttonText}>Cerrar Sesión</Text>
-                    </TouchableOpacity>
+                       
+                        <TouchableOpacity
+                                style={[styles.button, { backgroundColor: '#FFA200', paddingLeft:100, paddingRight:100 , marginTop:150}]}
+                                onPress={handleLogout}
+                            >
+                                <Text style={styles.buttonText}>Cerrar Sesión</Text>
+                            </TouchableOpacity>
+
                 </View>
             </ScrollView>
         </View>
