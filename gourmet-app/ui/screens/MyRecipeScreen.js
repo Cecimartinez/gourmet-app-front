@@ -12,6 +12,10 @@ export default function MyRecipeScreen() {
   const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
 
   const [bookmark,setBookmark] = useState(null);
+  
+  const handleNavigateToRecipe = (recipe) => {
+    navigation.navigate('RecipeDetail', { recipe });
+  };
    
    
   // Función para manejar el evento de clic en el botón de favoritos para sacar y poner del mismo endpoint de favoritos
@@ -53,9 +57,9 @@ export default function MyRecipeScreen() {
         renderItem={({item}) =>(
           
           <View>
-          <View style={styles.recipeItem}
-          
-           >
+          <TouchableOpacity style={styles.recipeItem}
+              onPress={() => handleNavigateToRecipe(item)} // Navega a la página de detalles
+            >
              
               <Image source={{uri:item.photo[0]}} style={styles.recipeImage}/>
               <View style={styles.recipeInformation}>
@@ -84,7 +88,7 @@ export default function MyRecipeScreen() {
               </View>
               
 
-          </View>
+              </TouchableOpacity>
           </View>
         )}
         />
