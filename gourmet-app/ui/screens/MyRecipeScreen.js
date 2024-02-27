@@ -10,6 +10,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 export default function MyRecipeScreen() {
     
   const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
+
+  const [bookmark,setBookmark] = useState(null);
+   
    
   // Función para manejar el evento de clic en el botón de favoritos para sacar y poner del mismo endpoint de favoritos
   const handleBookmarkClick = (id) => {
@@ -17,12 +20,14 @@ export default function MyRecipeScreen() {
       method: 'POST'
     }).then((response) => response.json())
     .then((data) => {
+      setBookmark(id);
       console.log('Receta añadida a favoritos:', data);
     })
     .catch((error) => {
       console.error('Error al añadir la receta a favoritos:', error);
     });
   };
+  
 
   const navigation = useNavigation(); // Obtiene la función de navegación
   useEffect(() => {
@@ -36,7 +41,7 @@ export default function MyRecipeScreen() {
       .catch((error) => {
         console.error('Error al obtener las recetas:', error);
       });
-  }, [recipes]); // Se ejecuta solo una vez al montar el componente
+  }, [bookmark]); // Se ejecuta solo una vez al montar el componente
 
     return (
         <View style={styles.container}>
