@@ -49,6 +49,10 @@ export default function SignInScreen() {
             setError();
             const accessToken = await GoogleSignin.getTokens();
             console.log("Access Token: " + accessToken.accessToken);
+            // Obtener los tokens (ID Token y Access Token)
+             const tokens = await GoogleSignin.getTokens();
+              console.log("ID Token: ", tokens.idToken);
+             console.log("Access Token: ", tokens.accessToken);
             
     
             // Navegar a TabNavigation después de iniciar sesión

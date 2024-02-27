@@ -7,7 +7,7 @@ export default{
     "icon": "./assets/images/icon-gourmet.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
-      "**/*"
+      "/*"
     ],
     "splash": {
       "image": "./assets/images/icon-gourmet.png",
@@ -50,7 +50,7 @@ export default{
     },
     "extra": {
       "eas": {
-        "projectId": "a98db635-6103-4fdd-8624-979064f24dde"
+        "projectId": "00963db-55c3-41db-9796-d65c46388f2b"
       }
     },
     "plugins": [
@@ -68,9 +68,5 @@ export default{
         }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "a00963db-55c3-41db-9796-d65c46388f2b"
-      }
-    }
-  }
+    
+    }
