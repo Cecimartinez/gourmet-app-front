@@ -1,4 +1,4 @@
-export default{
+{
   "expo": {
     "name": "gourmet-app",
     "slug": "gourmet-app",
@@ -7,18 +7,13 @@ export default{
     "icon": "./assets/images/icon-gourmet.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
-      "/*"
+      "*/"
     ],
     "splash": {
       "image": "./assets/images/icon-gourmet.png",
       "resizeMode": "contain",
       "backgroundColor": "#ff9900"
     },
-
-    "plugins":[
-      "@react-native-google-signin/google-signin" 
-    ],
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.godeli.gourmet",
@@ -38,20 +33,13 @@ export default{
         "foregroundImage": "./assets/images/icon-gourmet.png",
         "backgroundColor": "#ffffff"
       },
-      },
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ]
     },
-    
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "00963db-55c3-41db-9796-d65c46388f2b"
-      }
     },
     "plugins": [
       "@react-native-google-signin/google-signin",
@@ -68,5 +56,10 @@ export default{
         }
       ]
     ],
-    
-    }
+    "extra": {
+      "eas": {
+        "projectId": "a00963db-55c3-41db-9796-d65c46388f2b"
+      }
+    }
+  }
+}
