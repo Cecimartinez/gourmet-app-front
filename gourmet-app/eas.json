@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 7.3.0"
+    "version": ">=  7.3.0"
   },
   "build": {
     "development": {
@@ -14,9 +14,15 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      }
+    }
   },
   "submit": {
     "production": {}
   }
 }
+ 
