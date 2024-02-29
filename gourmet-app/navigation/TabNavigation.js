@@ -8,6 +8,7 @@ import ProfileScreen from '../ui/screens/ProfileScreen';
 import { AntDesign, Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '../ui/screens/HomeScreen';
 import { View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import RecipesUser from '../ui/components/Recipes';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BookOutlined } from '@ant-design/icons';
@@ -90,7 +91,7 @@ export default function TabNavigation() {
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <MaterialIcons name="favorite-border" size={24} color={focused ? "#F39E0B" : "#111"} />
+                                    <Feather name="bookmark" size={24} color={focused ? "#F39E0B" : "#111"} />
                                 </View>
                             );
                         }
