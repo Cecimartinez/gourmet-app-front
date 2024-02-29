@@ -4,8 +4,6 @@ import { View, Text, ScrollView, Modal } from 'react-native'
 import Search from '../components/Search'
 import Categories from '../components/Categories'
 import Recipes from '../components/Recipes'
-import { Button } from '@rneui/themed'
-import { useNavigation } from '@react-navigation/native'
 
 export default function HomeScreen() {
 
@@ -23,8 +21,8 @@ export default function HomeScreen() {
                 showsVerticalScrollIndicator={false}
 
             >
-                <View style={{ marginBottom: 20 }}>
-                    <Text style={{ fontSize: 18, color: '#555', textAlign: 'left' }}>Hello, Ana!</Text>
+                <View style={{marginBottom: 20}}>
+                    <Text style={{fontSize: 18, color: '#555', textAlign: 'left'}}>Hello!</Text>
                     <View>
                         <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#555', textAlign: 'left' }}>Make your own food,</Text>
                     </View>

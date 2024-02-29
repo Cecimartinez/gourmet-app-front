@@ -760,7 +760,7 @@ const CreateRecipeScreen = ({route : route}) => {
             )}
             
             <Button onPress={handleCancelar}> Cancelar </Button>
-            <Button onPress={handleImprimirEstados}> Imprimir Estados </Button>
+            {/* <Button onPress={handleImprimirEstados}> Imprimir Estados </Button> */}
 
 
                
