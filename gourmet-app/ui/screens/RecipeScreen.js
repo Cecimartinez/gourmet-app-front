@@ -11,6 +11,8 @@ import Ingredients from '../components/ViewRecipeContent/Ingredients';
 import Steps from '../components/ViewRecipeContent/Steps';
 import Video from '../components/ViewRecipeContent/Video';
 import InformacionNutricional from '../components/ViewRecipeContent/InformacionNutricional';
+import { useRoute } from '@react-navigation/native';
+
 
 
 
@@ -31,8 +33,18 @@ export default function RecipeScreen({ route, navigation, navigator }) {
 
 
     const { recipe } = route.params;
-   
+    console.log(recipe, 'recipe en recipe screen');
+    const route2 = useRoute();
+
+    const { responseBody } = route2.params;
+  //  console.log(userInfo, 'user info en profile')
+    console.log(responseBody._id, 'user info id')
+
     
+
+   
+
+
 
 
     const [selectedCategory, setSelectedCategory] = useState(1);
@@ -40,7 +52,7 @@ export default function RecipeScreen({ route, navigation, navigator }) {
     const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
 
     const handleBookmarkClick = (id) => {
-        fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278/${id}`, {
+        fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/${responseBody._id}/${id}`, {
             method: 'POST'
         }).then((response) => response.json())
             .then((data) => {
@@ -53,7 +65,7 @@ export default function RecipeScreen({ route, navigation, navigator }) {
 
     useEffect(() => {
         // Realiza una solicitud HTTP para obtener las recetas desde tu backend
-        fetch('https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278')
+        fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/${responseBody._id}`)
             .then((response) => response.json())
             .then((data) => {
                 // Actualiza el estado con las recetas obtenidas
@@ -228,10 +240,12 @@ const styles = StyleSheet.create({
         marginRight: 10,
 
 
-    }, timeImage:{  marginTop: 7,
+    }, timeImage: {
+        marginTop: 7,
         alignSelf: 'flex-start',
-        marginBottom: 30,},
-    
+        marginBottom: 30,
+    },
+
     recipeStarsIcon: {
         marginTop: 7,
         alignSelf: 'flex-start',

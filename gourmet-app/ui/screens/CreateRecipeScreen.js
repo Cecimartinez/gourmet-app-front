@@ -1,17 +1,18 @@
-import React, { useState, useRef, useEffect  } from "react";
-import { Button,  Icon,  Input } from "@rneui/themed";
-import {  View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { Button, Icon, Input } from "@rneui/themed";
+import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import TouchableCategory from "../components/TouchableCategory/TouchableCategory";
 import IngredientesComponent from "../components/IngredientesComponent/IngredientesComponent";
 import StepsComponent from "../components/StepsComponent/StepsComponent";
 import { StatusBar } from 'expo-status-bar'
 import * as ImagePicker from 'expo-image-picker';
 import ActionSheet from 'react-native-actionsheet';
+import { useRoute } from '@react-navigation/native';
 
 
 
-const CreateRecipeScreen = ({route : route}) => {
-    
+const CreateRecipeScreen = ({ route: route }) => {
+
     const [calories, setCalories] = useState('');
     const [carbohidratos, setCarbohidratos] = useState('');
     const [proteinas, setProteinas] = useState('');
@@ -23,12 +24,19 @@ const CreateRecipeScreen = ({route : route}) => {
     const [categories, setCategories] = useState([]);
     const [imagesArray, setImagesArray] = useState([]);
     const [ingredients, setIngredients] = useState([]);
-    const [nutritionalInfo, setNutritionalInfo] = useState([ ]);
+    const [nutritionalInfo, setNutritionalInfo] = useState([]);
     const [pasos, setPasos] = useState([]);
     const [cantidadPasos, setCantidadPasos] = useState(0);
     const [requiredTime, setRequiredTime] = useState(0);
-   
-    const categoriesArray = [ {id: 1, name: 'Vegetariana'}, {id: 2, name: 'Gluten Free'}, {id: 3, name: 'Cena'}, {id: 4, name: 'Postre'},{id: 5, name: 'Mediteranea'}, {id: 6, name: 'Vegana'}, {id: 7, name: 'Sin TACC'}, {id: 8, name: 'Celiaca'}]
+
+    const categoriesArray = [{ id: 1, name: 'Vegetariana' }, { id: 2, name: 'Gluten Free' }, { id: 3, name: 'Cena' }, { id: 4, name: 'Postre' }, { id: 5, name: 'Mediteranea' }, { id: 6, name: 'Vegana' }, { id: 7, name: 'Sin TACC' }, { id: 8, name: 'Celiaca' }]
+
+    const route2 = useRoute();
+
+    const { responseBody } = route2.params;
+    //  console.log(userInfo, 'user info en profile')
+    console.log(responseBody._id, 'user info id')
+
 
     // esto estaba cuando funcionaba antes de params edit
     //useEffect(() => {
@@ -51,55 +59,55 @@ const CreateRecipeScreen = ({route : route}) => {
             setIsEditing(true);
             setRecipeId(route.params.id);
             console.log("toma como que esta editando")
-            console.log("en primer use effect recipeId:",recipeId)
+            console.log("en primer use effect recipeId:", recipeId)
             fetchRecipeDetails(route.params.id);
             route.params.id = null;
-        }else {
-        setImagesArray([])
-        setIsEditing(false);
-        setError(null); //  Esto no se si esta bien ojo 
-        console.log("toma como que no esta editando")
+        } else {
+            setImagesArray([])
+            setIsEditing(false);
+            setError(null); //  Esto no se si esta bien ojo 
+            console.log("toma como que no esta editando")
         }
-      
+
     }, [route.params]);
 
 
 
-    
 
-        const [recipeDetails, setRecipeDetails] = useState({
-            name: '',
-            description: '',
-            calories: 0,
-            carbohidratos: 0,
-            proteinas: 0,
-            grasas: 0,
-            sodio: 0,
-            ingredients: [],
-            steps: [],
 
-        });
-    
-        // useEffect(() => {
-        //     if (recipeId!==null ) {
-        //         fetchRecipeDetails(recipeId);
-        //     }
-        //     //console.log("USE EFFECT FETCH RECIPES route.params.id:",route.params.id)
-        //     console.log(" USE EFFECT FETCH RECIPES  route.params:",route.params)
-        //     console.log(" USE EFFECT FETCH RECIPES  recipeId:",recipeId)
-            
-        // }, [route.params]);
-        
+    const [recipeDetails, setRecipeDetails] = useState({
+        name: '',
+        description: '',
+        calories: 0,
+        carbohidratos: 0,
+        proteinas: 0,
+        grasas: 0,
+        sodio: 0,
+        ingredients: [],
+        steps: [],
+
+    });
+
+    // useEffect(() => {
+    //     if (recipeId!==null ) {
+    //         fetchRecipeDetails(recipeId);
+    //     }
+    //     //console.log("USE EFFECT FETCH RECIPES route.params.id:",route.params.id)
+    //     console.log(" USE EFFECT FETCH RECIPES  route.params:",route.params)
+    //     console.log(" USE EFFECT FETCH RECIPES  recipeId:",recipeId)
+
+    // }, [route.params]);
+
 
     const fetchRecipeDetails = async (recipeIdd) => {
         try {
             console.log("entra a fetch recipe details")
-            console.log("en primer use effect recipeId:",recipeIdd)
+            console.log("en primer use effect recipeId:", recipeIdd)
 
             const response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/${recipeIdd}`);
             if (response.ok) {
                 const recipeData = await response.json();
-               
+
                 setIngredients(recipeData.ingredients); //ok
                 setDescription(recipeData.description);//ok
                 //setPasos(recipeData.steps);
@@ -111,7 +119,7 @@ const CreateRecipeScreen = ({route : route}) => {
                 //setCalories(parseFloat(recipeData.calorie));
                 setCalories(recipeData.calorie)
                 if (recipeData.requiredTime) {
-                    setRequiredTime(recipeData.requiredTime);                
+                    setRequiredTime(recipeData.requiredTime);
                 }
                 setGrasas(parseFloat(recipeData.fat));
                 setProteinas(parseFloat(recipeData.protein));
@@ -128,16 +136,16 @@ const CreateRecipeScreen = ({route : route}) => {
                     name: index + 1, // El nombre del paso será un número
                     description: instruction // La descripción del paso es la instrucción recibida del backend
                 }));
-                
+
                 // Ahora `transformedSteps` es un array de objetos con el formato { name: number, description: string }
                 // Puedes establecerlo en el estado `pasos`
                 setPasos(transformedSteps);
-                
+
                 // Ahora `transformedIngredients` es un array de objetos con la forma { name: cantidad }
                 // Puedes establecerlo en el estado ingredients
                 setIngredients(transformedIngredients);
 
-               
+
 
             } else {
                 console.error('Error al obtener los detalles de la receta:', response.status);
@@ -159,10 +167,10 @@ const CreateRecipeScreen = ({route : route}) => {
     };
 
 
-    
+
     const actionSheetRef = useRef(null);
 
-     // manejo de action sheet
+    // manejo de action sheet
     const openActionSheet = () => {
         actionSheetRef.current.show();
     };
@@ -170,14 +178,14 @@ const CreateRecipeScreen = ({route : route}) => {
     // Funcion manejo selección del ActionSheet
     const handleActionSheet = (index) => {
         if (index === 0) {
-        // Tomar foto
-        takeImage();
+            // Tomar foto
+            takeImage();
         } else if (index === 1) {
-        // Elegir de la galería
-        pickImage();
+            // Elegir de la galería
+            pickImage();
         }
     };
-    
+
     const handleIngredientModalClose = ({ ingredient, cantidad, updatedIngredient }) => {
         if (updatedIngredient) {
             // Si el ingrediente se actualizó, actualiza el estado del ingrediente existente
@@ -204,8 +212,8 @@ const CreateRecipeScreen = ({route : route}) => {
             setIngredients(filteredIngredients);
         }
     };
-    
-    
+
+
     const handleStepModalClose = ({ step, detail, updatedStep }) => {
         if (updatedStep) {
             // Si el paso se actualizó, actualiza el estado del paso existente
@@ -223,11 +231,11 @@ const CreateRecipeScreen = ({route : route}) => {
                 setPasos(updatedSteps);
             } else {
                 // Si es un nuevo paso, crea un nuevo objeto con un id único
-                
-                const newStep = { name: pasos.length+1, description: detail };
+
+                const newStep = { name: pasos.length + 1, description: detail };
                 setPasos([...pasos, newStep]);
                 setCantidadPasos(pasos.length + 1)
-                
+
             }
         } else {
             // Si el detalle está vacío, elimina el paso del estado
@@ -235,7 +243,7 @@ const CreateRecipeScreen = ({route : route}) => {
             setPasos(filteredSteps);
         }
     };
-    
+
 
     const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -289,10 +297,10 @@ const CreateRecipeScreen = ({route : route}) => {
                 sodium: +sodio, // Asumo que este valor está disponible en tu interfaz de usuario para que el usuario lo ingrese
                 like: 0, // Puedes inicializarlo en 0 o ajustarlo según tus necesidades
                 video: videoURL // Asumo que este valor está disponible en tu interfaz de usuario para que el usuario lo ingrese
-             };
-             const stringified = JSON.stringify(recipeData)
+            };
+            const stringified = JSON.stringify(recipeData)
             const json = JSON.parse(stringified)
-           
+
             // const recipeData = {
             //     title: "Ensalada César dos",
             //     description: "Una deliciosa ensalada clásica con aderezo César.",
@@ -383,16 +391,16 @@ const CreateRecipeScreen = ({route : route}) => {
     const handleCreateRecipeWithPhoto = async () => {
         try {
             setLoading(true); // Comenzar la carga
-            
+
             const formData = new FormData();
-    
+
             // Agrega los datos de la receta al FormData
             formData.append('title', name);
             formData.append('description', description);
-            formData.append('user', "64a60d14592f32e512ada278"); //  MUY IMPORTANTE 
-//           formData.append('requiredTime', "20"); 
-            formData.append('portion', "2"); 
-            formData.append('hashtag', "Ensalada"); 
+            formData.append('user', responseBody._id); //  MUY IMPORTANTE 
+            //           formData.append('requiredTime', "20"); 
+            formData.append('portion', "2");
+            formData.append('hashtag', "Ensalada");
             //formData.append('calorie', "2");
             formData.append('calorie', calories.toString());
             //console.log("requiredTime:",requiredTime.toString())
@@ -402,41 +410,41 @@ const CreateRecipeScreen = ({route : route}) => {
             formData.append('fat', grasas.toString());
             //formData.append('protein', "3");
             formData.append('protein', proteinas.toString());
-             formData.append('category', JSON.stringify(categories)); 
-            formData.append('rating', "4.9"); 
-            formData.append('sodium', "3"); 
-            formData.append('video', videoURL); 
+            formData.append('category', JSON.stringify(categories));
+            formData.append('rating', "4.9");
+            formData.append('sodium', "3");
+            formData.append('video', videoURL);
             // formData.append('instructions',JSON.stringify(["nada","nada2"]));
             // formData.append('ingredients',JSON.stringify([{"name":"algo","quantity":5},{"name":"algo2","quantity":10}]));
 
-              // Agrega los ingredientes al FormData
-              let newIngredients = [];
-                // ingredients.forEach((ingredient, index) => {
-                //     newIngredients.push({ name: ingredient.name, quantity: ingredient.cantidad.toString() });
-                // });
+            // Agrega los ingredientes al FormData
+            let newIngredients = [];
+            // ingredients.forEach((ingredient, index) => {
+            //     newIngredients.push({ name: ingredient.name, quantity: ingredient.cantidad.toString() });
+            // });
 
-                ingredients.forEach((ingredient, index) => {
-                    let cantidad = ingredient.cantidad != null ? ingredient.cantidad.toString() : ''; // Si es null o undefined, asigna una cadena vacía
-                    console.log("ingediente cantidad:",cantidad)
-                    newIngredients.push({ name: ingredient.name, quantity: cantidad });
-                });
-                
-                let newSteps = [];
-                pasos.forEach((step, index) => {
-                    newSteps.push( step.description );
-                });
+            ingredients.forEach((ingredient, index) => {
+                let cantidad = ingredient.cantidad != null ? ingredient.cantidad.toString() : ''; // Si es null o undefined, asigna una cadena vacía
+                console.log("ingediente cantidad:", cantidad)
+                newIngredients.push({ name: ingredient.name, quantity: cantidad });
+            });
+
+            let newSteps = [];
+            pasos.forEach((step, index) => {
+                newSteps.push(step.description);
+            });
 
             //   ingredients.forEach((ingredient, index) => {
             //       formData.append(JSON.stringify({ name: ingredient.name, quantity: ingredient.cantidad.toString() }));
             //   });
-                formData.append('ingredients',JSON.stringify(newIngredients));
-                formData.append('instructions',JSON.stringify(newSteps));
+            formData.append('ingredients', JSON.stringify(newIngredients));
+            formData.append('instructions', JSON.stringify(newSteps));
 
-             
-    
+
+
             // Agrega las imágenes al FormData
             imagesArray.forEach((photo, index) => {
-                
+
                 if (photo !== null) {
                     formData.append(`photo`, {
                         uri: photo,
@@ -446,40 +454,40 @@ const CreateRecipeScreen = ({route : route}) => {
                 }
             });
             let response;
-            
+
             console.log(formData)
 
-            if(isEditing==false){
-                    console.log("-------MANDA Post")
+            if (isEditing == false) {
+                console.log("-------MANDA Post")
 
-                    // Realizar la solicitud POST al servidor
-                     response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            Accept: "application/json",
-                            "Content-Type": "multipart/form-data",
-                        },
-                    });
-            }else{              
                 // Realizar la solicitud POST al servidor
-                if( route.params && route.params.id){
-                    setRecipeId(route.params.id)
-                }
-                console.log("-------MANDA PATCH")   //automatizar este id
-                response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto/${recipeId}`,
-                {
-                    method: 'PATCH',
+                response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto', {
+                    method: 'POST',
                     body: formData,
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "multipart/form-data",
                     },
                 });
-               
+            } else {
+                // Realizar la solicitud POST al servidor
+                if (route.params && route.params.id) {
+                    setRecipeId(route.params.id)
+                }
+                console.log("-------MANDA PATCH")   //automatizar este id
+                response = await fetch(`https://ad-backend-production.up.railway.app/api/recipes/recipeWithPhoto/${recipeId}`,
+                    {
+                        method: 'PATCH',
+                        body: formData,
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "multipart/form-data",
+                        },
+                    });
+
             }
 
-    
+
             // Verificar si la solicitud fue exitosa
             if (response.ok) {
                 // Si la respuesta es exitosa, puedes manejar el resultado aquí
@@ -496,14 +504,14 @@ const CreateRecipeScreen = ({route : route}) => {
             setLoading(false); // Finalizar la carga, independientemente del resultado
         }
     };
-    
+
 
 
     const handleCloseError = () => {
         setError(null); // Limpiar el estado de error al cerrar el mensaje
     };
-    
-  
+
+
 
 
 
@@ -519,19 +527,19 @@ const CreateRecipeScreen = ({route : route}) => {
      * 
      */
 
-    
-  
+
+
     const [status, requestPermission] = ImagePicker.useCameraPermissions();
     const [cameraPermission, setCameraPermission] = useState(false);
 
-     const getCameraPermission = async () => {
+    const getCameraPermission = async () => {
         //   const { status } = await Permissions.requestAsync(Permissions.CAMERA);
         requestPermission();
-          if (status !== 'granted') {
-              alert('Se requieren permisos de cámara para tomar fotos.');
-         }
-         setCameraPermission(status === 'granted');
-     };
+        if (status !== 'granted') {
+            alert('Se requieren permisos de cámara para tomar fotos.');
+        }
+        setCameraPermission(status === 'granted');
+    };
 
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [image, setImage] = useState("");
@@ -539,48 +547,48 @@ const CreateRecipeScreen = ({route : route}) => {
     const takeImage = async () => {
         getCameraPermission();
         let result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          quality: 1,
-          allowsMultipleSelection: false
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+            allowsMultipleSelection: false
         });
-    
-        
-        
+
+
+
         setImagesArray([...imagesArray, result.assets[0].uri]);
 
-    
+
         if (!result.cancelled) {
-          setImage(result.uri);
+            setImage(result.uri);
         }
-      };
-
-
-    
-    const pickImage = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
-        allowsMultipleSelection: false,
-        orderedSelection: true,
-        selectionLimit: 10,
-  
-      });
-      
-      setImagesArray([...imagesArray, result.assets[0].uri]);
-
-  
-      if (!result.canceled) {
-        setImage(result.assets[0]);
-      }
     };
-  
-    
-    
-   
-    
-  
-    if(isCameraOpen) return <CameraComponent hideToggleSetter={setIsCameraOpen} allowImageSet={false} _cb={setImage}/>
-  
+
+
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+            allowsMultipleSelection: false,
+            orderedSelection: true,
+            selectionLimit: 10,
+
+        });
+
+        setImagesArray([...imagesArray, result.assets[0].uri]);
+
+
+        if (!result.canceled) {
+            setImage(result.assets[0]);
+        }
+    };
+
+
+
+
+
+
+    if (isCameraOpen) return <CameraComponent hideToggleSetter={setIsCameraOpen} allowImageSet={false} _cb={setImage} />
+
 
     //eliminar la imagen
     const handleImagePress = (index) => {
@@ -605,165 +613,165 @@ const CreateRecipeScreen = ({route : route}) => {
         setCategories([]);
         setImagesArray([]);
         setIngredients([]);
-        setNutritionalInfo([ ]);
+        setNutritionalInfo([]);
         setPasos([]);
         setCantidadPasos(0);
         setRecipeId(null);
     }
 
     const handleImprimirEstados = () => {
-        console.log(" handleImprimirEstados is Editing:",isEditing)
-        console.log(" handleImprimirEstados recipeId:",recipeId)
+        console.log(" handleImprimirEstados is Editing:", isEditing)
+        console.log(" handleImprimirEstados recipeId:", recipeId)
     }
 
-    
-    return(
+
+    return (
         <View style={styles.container}>
-        
 
-           
-        <StatusBar style='dark'/>
-        <ScrollView style={{marginTop: 50}}
-                    contentContainerStyle={{ paddingBottom: 100}}
-                    showsVerticalScrollIndicator={false}
-        >
-            <Text style={{color:"#FFA200", fontSize:18, fontWeight:"500", paddingLeft:10}} >Create Recipe</Text>
-            
-            <View style={styles.container}>
-            <View style={styles.containerScrollView}>
-                <ScrollView
-                        style={{ flex: 1 }}
-                        horizontal
-                        contentContainerStyle={styles.imageContainer}
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        {imagesArray.map((photo, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
-                                <Image source={{ uri: photo }} style={styles.image} />
-                            </TouchableOpacity>
-                        ))}
-                        <Button
-                            icon={<Icon name="add-circle-outline" size={30} />}
-                            color={'white'}
-                            style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}
-                            onPress={openActionSheet} // Llama a la función openActionSheet al presionar el botón
-                        />
-                        <Image source={{ uri: "null" }} style={styles.image} />
-                    </ScrollView>
-            </View>
 
-            {/* ActionSheet */}
-            <ActionSheet
-                ref={actionSheetRef}
-                title={'Elige una opción'}
-                options={['Tomar foto', 'Elegir de la galería', 'Cancelar']}
-                cancelButtonIndex={2}
-                destructiveButtonIndex={2}
-                onPress={handleActionSheet}
-            />
-            </View>
-            <View style={styles.infoContainer}>
+
+            <StatusBar style='dark' />
+            <ScrollView style={{ marginTop: 50 }}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                showsVerticalScrollIndicator={false}
+            >
+                <Text style={{ color: "#FFA200", fontSize: 18, fontWeight: "500", paddingLeft: 10 }} >Create Recipe</Text>
+
+                <View style={styles.container}>
+                    <View style={styles.containerScrollView}>
+                        <ScrollView
+                            style={{ flex: 1 }}
+                            horizontal
+                            contentContainerStyle={styles.imageContainer}
+                            showsHorizontalScrollIndicator={false}
+                        >
+                            {imagesArray.map((photo, index) => (
+                                <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
+                                    <Image source={{ uri: photo }} style={styles.image} />
+                                </TouchableOpacity>
+                            ))}
+                            <Button
+                                icon={<Icon name="add-circle-outline" size={30} />}
+                                color={'white'}
+                                style={[styles.addImageButtom, { backgroundColor: 'transparent' }]}
+                                onPress={openActionSheet} // Llama a la función openActionSheet al presionar el botón
+                            />
+                            <Image source={{ uri: "null" }} style={styles.image} />
+                        </ScrollView>
+                    </View>
+
+                    {/* ActionSheet */}
+                    <ActionSheet
+                        ref={actionSheetRef}
+                        title={'Elige una opción'}
+                        options={['Tomar foto', 'Elegir de la galería', 'Cancelar']}
+                        cancelButtonIndex={2}
+                        destructiveButtonIndex={2}
+                        onPress={handleActionSheet}
+                    />
+                </View>
+                <View style={styles.infoContainer}>
+                    <View style={styles.formItem}>
+                        <Input style={{ fontSize: 15 }} value={name} placeholder="Name" onChangeText={(text) => setName(text)} />
+                    </View>
+                    <View style={styles.formItem}>
+                        <Input style={{ fontSize: 15 }} value={description} placeholder="Descripción" onChangeText={(text) => setDescription(text)} />
+                    </View>
+                    <View style={styles.formItem}>
+                        <Input style={{ fontSize: 15 }} value={videoURL} placeholder="URL del video" onChangeText={(text) => setVideoURL(text)} />
+                    </View>
+                </View>
+                <View style={styles.categoriesContainer}>
+                    <Text style={styles.title}>Categorías</Text>
+                    <View style={{ flex: 1 }}>
+                        <ScrollView
+                            horizontal
+                            contentContainerStyle={styles.scrollViewContent}
+                            showsHorizontalScrollIndicator={false}
+                        >
+                            {categoriesArray.map((category, index) => (
+                                <TouchableCategory key={index} category={category} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
+                            ))}
+                        </ScrollView>
+                    </View>
+                </View>
                 <View style={styles.formItem}>
-                    <Input style={{fontSize:15}} value={name} placeholder="Name" onChangeText={(text) => setName(text)} />
-                </View>
-                <View style={styles.formItem}>
-                    <Input style={{fontSize:15}}  value={description} placeholder="Descripción" onChangeText={(text) => setDescription(text)} />
-                </View>
-                <View style={styles.formItem}>
-                    <Input style={{fontSize:15}} value={videoURL} placeholder="URL del video" onChangeText={(text) => setVideoURL(text)} />
-                </View>
-            </View>
-            <View style={styles.categoriesContainer}>
-                <Text style={styles.title}>Categorías</Text>
-                <View style={{flex:1}}>
-                <ScrollView
-                    horizontal
-                    contentContainerStyle={styles.scrollViewContent}
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {categoriesArray.map((category, index) => (
-                        <TouchableCategory key={index} category={category} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />                  
-                    ))}
-                </ScrollView>
-                </View>
-            </View>
-                 <View style={styles.formItem}>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>tiempo requerido</Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Input value={requiredTime.toString()} onChangeText={(text) => setRequiredTime(text)} keyboardType="numeric" />
-                        </View>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>min</Text>
-                        </View>
+                    <View style={styles.legendContainer}>
+                        <Text style={styles.legend}>tiempo requerido</Text>
                     </View>
-            <View style={styles.nutritionalInfo}>
-                <Text style={styles.title}>Informacion nutricional</Text>
-                <View style={styles.nutritionalInfoContainer}>
-                    <View style={styles.formItem}>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>Calorias</Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Input value={calories.toString()} onChangeText={(text) => setCalories(text)} keyboardType="numeric" />
-                        </View>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>Kcal</Text>
-                        </View>
+                    <View style={styles.inputContainer}>
+                        <Input value={requiredTime.toString()} onChangeText={(text) => setRequiredTime(text)} keyboardType="numeric" />
                     </View>
-                    
-                    <View style={styles.formItem}>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>Grasas</Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Input value={grasas.toString()} onChangeText={(text) => setGrasas(text)} keyboardType="numeric" />
-                        </View>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>g</Text>
-                        </View>
+                    <View style={styles.legendContainer}>
+                        <Text style={styles.legend}>min</Text>
                     </View>
-                    <View style={styles.formItem}>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>Proteinas</Text>
+                </View>
+                <View style={styles.nutritionalInfo}>
+                    <Text style={styles.title}>Informacion nutricional</Text>
+                    <View style={styles.nutritionalInfoContainer}>
+                        <View style={styles.formItem}>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>Calorias</Text>
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <Input value={calories.toString()} onChangeText={(text) => setCalories(text)} keyboardType="numeric" />
+                            </View>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>Kcal</Text>
+                            </View>
                         </View>
-                        <View style={styles.inputContainer}>
-                            <Input value={proteinas.toString()} onChangeText={(text) => setProteinas(text)} keyboardType="numeric" />
+
+                        <View style={styles.formItem}>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>Grasas</Text>
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <Input value={grasas.toString()} onChangeText={(text) => setGrasas(text)} keyboardType="numeric" />
+                            </View>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>g</Text>
+                            </View>
                         </View>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>g</Text>
+                        <View style={styles.formItem}>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>Proteinas</Text>
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <Input value={proteinas.toString()} onChangeText={(text) => setProteinas(text)} keyboardType="numeric" />
+                            </View>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>g</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.formItem}>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>Sodio</Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Input value={sodio.toString()} onChangeText={(text) => setSodio(text)} keyboardType="numeric" />
-                        </View>
-                        <View style={styles.legendContainer}>
-                            <Text style={styles.legend}>mg</Text>
+                        <View style={styles.formItem}>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>Sodio</Text>
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <Input value={sodio.toString()} onChangeText={(text) => setSodio(text)} keyboardType="numeric" />
+                            </View>
+                            <View style={styles.legendContainer}>
+                                <Text style={styles.legend}>mg</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
-            <IngredientesComponent ingredientesArray={ingredients} handleModalClose={handleIngredientModalClose} />
+                <IngredientesComponent ingredientesArray={ingredients} handleModalClose={handleIngredientModalClose} />
 
-            <StepsComponent stepsArray={pasos}   handleModalClose={handleStepModalClose}     />
+                <StepsComponent stepsArray={pasos} handleModalClose={handleStepModalClose} />
 
-            {/* <Button onPress={handleCreateRecipe}>Create Recipe</Button> */}
+                {/* <Button onPress={handleCreateRecipe}>Create Recipe</Button> */}
 
-            <Button onPress={handleCreateRecipeWithPhoto}> Guardar </Button>
-            {isEditing && (
-                <Button onPress={handleDeleatRecipe}>Eliminar Receta</Button>
-            )}
-            
-            <Button onPress={handleCancelar}> Cancelar </Button>
-            {/* <Button onPress={handleImprimirEstados}> Imprimir Estados </Button> */}
+                <Button onPress={handleCreateRecipeWithPhoto}> Guardar </Button>
+                {isEditing && (
+                    <Button onPress={handleDeleatRecipe}>Eliminar Receta</Button>
+                )}
+
+                <Button onPress={handleCancelar}> Cancelar </Button>
+                {/* <Button onPress={handleImprimirEstados}> Imprimir Estados </Button> */}
 
 
-               
+
                 <View>
                     {loading ? (
                         <ActivityIndicator size="large" color="#0000ff" />
@@ -792,29 +800,29 @@ const CreateRecipeScreen = ({route : route}) => {
                 {/* <Text>{isEditing ? 'Editar Receta' : 'Crear Receta'}</Text> */}
                 {/* Aquí puedes colocar los campos  <Button title={isEditing ? 'Editar Receta' : 'Crear Receta'} onPress={handleCreateOrEditRecipe} />
                 y controles para crear o editar la receta */}
-                
 
 
 
 
-            </ScrollView>   
+
+            </ScrollView>
 
 
         </View>
 
     )
 
-        }
+}
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         paddingTop: 10,
         paddingLeft: 10,
         flex: 1,
         width: '100%',
         backgroundColor: 'white',
     },
-    infoContainer:{
+    infoContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -825,19 +833,19 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        
-      },
-      imageContainer: {
+
+    },
+    imageContainer: {
         flexDirection: 'row',
         marginHorizontal: 38,
-      },
-      image: {
+    },
+    image: {
         width: 100,
         height: 100,
         marginHorizontal: 10,
         borderRadius: 50, // para hacer que la imagen sea circular
-      },
-      addImageButtom:{
+    },
+    addImageButtom: {
         width: 100,
         height: 100,
         alignContent: 'center',
@@ -845,65 +853,65 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 50, // para hacer que la imagen sea circular
         backgroundColor: 'orange',
-      },
-      scrollViewContent: {
+    },
+    scrollViewContent: {
         alignItems: 'center',
         justifyContent: 'center',
-      },
- 
-    legendContainer:{
+    },
+
+    legendContainer: {
         flex: 1,
         justifyContent: 'space-evenly',
         alignItems: 'flex-start',
     },
 
-    title:{
+    title: {
         fontSize: 15,
         fontWeight: 'bold',
         marginBottom: 10,
         marginLeft: 10
     },
 
-    nutritionalInfoContainer:{
+    nutritionalInfoContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
     },
-    nutritionalInfo:{
+    nutritionalInfo: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'start',
     },
-    ingredientsContainer:{
+    ingredientsContainer: {
         flexDirection: 'column',
         flexWrap: 'wrap',
         justifyContent: 'center',
         marginLeft: 40,
         marginRight: 40,
     },
-    rightContainerCerrar:{
+    rightContainerCerrar: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
-    formItem:{
+    formItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 10,
         marginRight: 10,
     },
-    inputContainer:{
+    inputContainer: {
         width: '18%',
     },
-    buttomView:{
-            width: "90%",
-            height: 350,
-            borderRadius: 10,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginVertical: 10
-        
+    buttomView: {
+        width: "90%",
+        height: 350,
+        borderRadius: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginVertical: 10
+
     },
     successContainer: {
         backgroundColor: '#d3f7a4',

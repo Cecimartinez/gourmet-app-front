@@ -9,6 +9,7 @@ import RecipeScreen from './RecipeScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useIsFocused } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 
 
 
@@ -25,6 +26,12 @@ export default function FavoriteRecipesScreen({ route }) {
   const [recipes, setRecipes] = useState([]); // Estado para almacenar las recetas
   const [bookmark, setBookmark] = useState(null);
 
+  const route2 = useRoute();
+
+  const { responseBody } = route2.params;
+  //  console.log(userInfo, 'user info en profile')
+  console.log(responseBody._id, 'user info id')
+
 
 
 
@@ -35,14 +42,14 @@ export default function FavoriteRecipesScreen({ route }) {
     navigation.navigate('RecipeDetail', { recipe });
   };
 
-  const isVisible = useIsFocused();
+  const isVisible = useIsFocused();
 
 
 
 
 
   const handleBookmarkClick = (id) => {
-    fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278/${id}`, {
+    fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/${responseBody._id}/${id}`, {
       method: 'POST'
     }).then((response) => response.json())
       .then((data) => {
@@ -56,20 +63,20 @@ export default function FavoriteRecipesScreen({ route }) {
 
   };
 
-  
+
   useEffect(() => {
     // Realiza una solicitud HTTP para obtener las recetas desde tu backend
-    fetch('https://ad-backend-production.up.railway.app/api/users/favorite/64a60d14592f32e512ada278')
+    fetch(`https://ad-backend-production.up.railway.app/api/users/favorite/${responseBody._id}`)
       .then((response) => response.json())
       .then((data) => {
-       
+
         // Actualiza el estado con las recetas obtenidas
         setRecipes(data);
       })
       .catch((error) => {
         console.error('Error al obtener las recetas:', error);
       });
-  }, [bookmark,isVisible]); // Se ejecuta solo una vez al montar el componente
+  }, [bookmark, isVisible]); // Se ejecuta solo una vez al montar el componente
 
 
 

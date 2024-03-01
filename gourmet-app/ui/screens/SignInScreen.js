@@ -21,23 +21,23 @@ export default function SignInScreen() {
             webClientId: "715063980560-4kupte0f8oi6jotbq8t1c7q0v4qheebq.apps.googleusercontent.com",
             androidClientId: "715063980560-7ii2nm0sliade375u2qh40rlcvr5hntd.apps.googleusercontent.com",
             iosClientId: "715063980560-pctr6n6pkedvd32od686d2ged3tv2sq9.apps.googleusercontent.com"
-            
+
         });
     };
-    
+
 
     useEffect(() => {
         configureGoogleSignIn();
     }, []);
 
-    const signIn = async () => {
+    const signIn = async (userInfo) => {
         console.log("Pressed sign in");
 
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             setUserInfo(userInfo);
-            console.log(userInfo);
+
 
             console.log("User info: " + userInfo.user)
 
@@ -50,15 +50,15 @@ export default function SignInScreen() {
             const accessToken = await GoogleSignin.getTokens();
             console.log("Access Token: " + accessToken.accessToken);
             // Obtener los tokens (ID Token y Access Token)
-             const tokens = await GoogleSignin.getTokens();
-              console.log("ID Token: ", tokens.idToken);
-             console.log("Access Token: ", tokens.accessToken);
-             const dataLogIn = {
+            const tokens = await GoogleSignin.getTokens();
+            console.log("ID Token: ", tokens.idToken);
+            console.log("Access Token: ", tokens.accessToken);
+            const dataLogIn = {
                 sessionToken: tokens.accessToken,
                 idToken: tokens.idToken,
-                
+
             }
-            
+
 
             // Realizar la solicitud POST al servidor
             const response = await fetch('https://ad-backend-production.up.railway.app/api/recipes/', {
@@ -66,30 +66,48 @@ export default function SignInScreen() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(dataLogIn )
-            });
-            console.log(response);
+                body: JSON.stringify(dataLogIn)
+            });
+
+
+            const responseUserId = await fetch('https://ad-backend-production.up.railway.app/api/auth/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataLogIn) // Formatea correctamente el objeto como JSON
+            });
+
+            const responseBody = await responseUserId.json(); // Lee la respuesta como JSON
+
+            console.log(responseBody, 'Response User ID resol');
+
+
+
+
             // Navegar a TabNavigation después de iniciar sesión
-            navigation.navigate('MainTabNavigation');
+            // console.log(userInfo, 'VALOR DE userInfo');
+
+            navigation.navigate('MainTabNavigation', { responseBody });
         } catch (e) {
             setError(e);
         }
     };
-    
+
 
 
 
 
     return (
-        <SafeAreaView style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={styles.titleText} >Gourmet</Text>
-            <Image source={require('../../assets/images/icon-gourmet.png')} style={{width:  200, height:  200, marginTop:75, marginBottom:75}} />
+            <Image source={require('../../assets/images/icon-gourmet.png')} style={{ width: 200, height: 200, marginTop: 75, marginBottom: 75 }} />
             <Text>{JSON.stringify(error)}</Text>
             {!userInfo && (
                 <GoogleSigninButton
-                size={GoogleSigninButton.Size.Standard}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={signIn}
+                    size={GoogleSigninButton.Size.Standard}
+                    color={GoogleSigninButton.Color.Dark}
+                    onPress={signIn}
                 />
             )}
             <StatusBar style='auto' />
@@ -106,9 +124,9 @@ const styles = StyleSheet.create({
     titleText: {
         fontWeight: 'bold',
         color: '#F39E0B',
-        letterSpacing:  4,
-        fontSize:50,  
-        marginTop:70
+        letterSpacing: 4,
+        fontSize: 50,
+        marginTop: 70
     },
 });
 
